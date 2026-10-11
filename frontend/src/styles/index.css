@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #16A34A;
-    --color-primary-hover: #15803D;
+    --color-primary: #15803D;
+    --color-primary-hover: #166534;
     --color-primary-light: #DCFCE7;
     --color-primary-dark: #14532D;
     --color-surface: #FFFFFF;
@@ -11,6 +11,9 @@
     --color-border: #E2E8F0;
     --color-text-main: #0F172A;
     --color-text-muted: #64748B;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 }
 
 *,
@@ -34,6 +37,14 @@ body {
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+}
+
+.font-mono-price {
+    font-family: 'JetBrains Mono', monospace;
 }
 
 #root {
