@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->hasOne(Verification::class);
     }
 
+    public function kycVerification(): HasOne
+    {
+        return $this->hasOne(KycVerification::class);
+    }
+
     public function housingListings(): HasMany
     {
         return $this->hasMany(HousingListing::class, 'landlord_id');
@@ -63,6 +68,11 @@ class User extends Authenticatable
     public function isVerified(): bool
     {
         return $this->verification?->status === 'verified';
+    }
+
+    public function isKycVerified(): bool
+    {
+        return $this->kycVerification?->status === 'approved';
     }
 
     public function isLandlord(): bool

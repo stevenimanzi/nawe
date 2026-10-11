@@ -16,7 +16,9 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'role' => $this->role,
             'is_verified' => $this->isVerified(),
+            'is_kyc_verified' => $this->isKycVerified(),
             'verification' => new VerificationResource($this->whenLoaded('verification')),
+            'kyc_verification' => new KycVerificationResource($this->whenLoaded('kycVerification')),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }
