@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\KycVerification;
 use App\Models\MarketplaceItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,6 +53,16 @@ class TradeTest extends TestCase
     public function test_student_can_create_trade_item(): void
     {
         $student = User::factory()->create(['role' => 'student']);
+
+        KycVerification::create([
+            'user_id' => $student->id,
+            'document_type' => 'national_id',
+            'id_number' => '1200180012345678',
+            'full_name' => $student->name,
+            'id_front_image_path' => 'kyc/ids/front.jpg',
+            'status' => 'approved',
+        ]);
+
         Sanctum::actingAs($student);
 
         $response = $this->postJson('/api/v1/trade/items', [

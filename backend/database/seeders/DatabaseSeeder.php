@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\HousingAmenity;
 use App\Models\HousingListing;
 use App\Models\ItemImage;
+use App\Models\KycVerification;
 use App\Models\MarketplaceItem;
 use App\Models\Message;
 use App\Models\User;
@@ -94,6 +95,34 @@ class DatabaseSeeder extends Seeder
             'user_id' => $student2->id,
             'registration_number' => 'RPM/2024/MECH/108',
             'status' => 'verified',
+            'reviewed_by' => $admin->id,
+            'reviewed_at' => now(),
+        ]);
+
+        KycVerification::create([
+            'user_id' => $student1->id,
+            'document_type' => 'national_id',
+            'id_number' => '1200180054321045',
+            'full_name' => 'Steven Imanzi',
+            'date_of_birth' => '2001-04-15',
+            'id_front_image_path' => 'kyc/ids/imanzi_front.jpg',
+            'id_back_image_path' => 'kyc/ids/imanzi_back.jpg',
+            'selfie_with_id_path' => 'kyc/selfies/imanzi_selfie.jpg',
+            'status' => 'approved',
+            'reviewed_by' => $admin->id,
+            'reviewed_at' => now(),
+        ]);
+
+        KycVerification::create([
+            'user_id' => $student2->id,
+            'document_type' => 'national_id',
+            'id_number' => '1200280012345678',
+            'full_name' => 'Yannick Nshimiyimana',
+            'date_of_birth' => '2002-08-20',
+            'id_front_image_path' => 'kyc/ids/yannick_front.jpg',
+            'id_back_image_path' => 'kyc/ids/yannick_back.jpg',
+            'selfie_with_id_path' => 'kyc/selfies/yannick_selfie.jpg',
+            'status' => 'approved',
             'reviewed_by' => $admin->id,
             'reviewed_at' => now(),
         ]);

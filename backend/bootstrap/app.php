@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureSellerIsKycVerified;
 use App\Http\Middleware\EnsureUserIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'verified.user' => EnsureUserIsVerified::class,
+            'verified.seller' => EnsureSellerIsKycVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
