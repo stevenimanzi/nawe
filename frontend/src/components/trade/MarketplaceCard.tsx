@@ -27,12 +27,12 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item, onBuy })
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                     />
-                    <div className="absolute top-2.5 left-2.5 bg-[#050B14]/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 text-[10px] font-mono text-[#39FF14] flex items-center gap-1">
+                    <div className="absolute top-2.5 left-2.5 bg-[#050B14]/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 text-[10px] text-[#39FF14] flex items-center gap-1">
                         <Tag className="w-2.5 h-2.5" />
                         <span>{categoryLabels[item.category] ?? item.category}</span>
                     </div>
 
-                    <div className="absolute bottom-2.5 right-2.5 bg-[#39FF14] text-[#050B14] px-2.5 py-0.5 rounded-full text-xs font-mono font-black shadow-md">
+                    <div className="absolute bottom-2.5 right-2.5 bg-[#39FF14] text-[#050B14] px-2.5 py-0.5 rounded-full text-xs font-black shadow-md">
                         {item.price.toLocaleString()} RWF
                     </div>
                 </div>

@@ -52,7 +52,7 @@ export const KycView: React.FC = () => {
         <div className="min-h-screen bg-[#050B14] pb-24 text-white">
             <section className="px-4 py-6 max-w-xl mx-auto">
                 <div className="flex flex-col gap-2">
-                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[#39FF14] uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 text-xs text-[#39FF14] uppercase tracking-wider">
                         <ShieldCheck className="w-4 h-4" />
                         Trust & Identity Verification
                     </div>
@@ -133,7 +133,7 @@ export const KycView: React.FC = () => {
                                 value={idNumber}
                                 onChange={(e) => setIdNumber(e.target.value)}
                                 placeholder="e.g. 1 2001 8 0054321 0 45"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono placeholder-white/30 focus:outline-none focus:border-[#39FF14]"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#39FF14]"
                             />
                         </div>
 

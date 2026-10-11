@@ -56,6 +56,7 @@ const LINK_GROUPS: { title: string; links: { label: string; to: string }[] }[] =
 ];
 
 const LEGAL = [
+    { label: 'About NAWE', to: '/about' },
     { label: 'Terms of Service', to: '/terms' },
     { label: 'Privacy Policy', to: '/privacy' },
     { label: 'Cookie Policy', to: '/cookies' },
@@ -226,7 +227,7 @@ export const Footer: React.FC = () => {
                 {/* Bottom bar */}
                 <div className="border-t border-white/10">
                     <div className="flex w-full flex-col gap-4 px-[30px] py-6 text-sm text-emerald-100/70 md:flex-row md:items-center md:justify-between">
-                        <p>© {YEAR} NAWE. All rights reserved. Made in Rwanda.</p>
+                        <p>© {YEAR} NAWE. All rights reserved.</p>
 
                         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
                             {LEGAL.map((l) => (

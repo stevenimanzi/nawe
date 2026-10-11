@@ -20,7 +20,7 @@ export const DwellView: React.FC = () => {
         <div className="min-h-screen bg-[#050B14] pb-24 text-white">
             <section className="px-4 py-6 max-w-5xl mx-auto">
                 <div className="flex flex-col gap-2">
-                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[#C0392B] uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 text-xs text-[#C0392B] uppercase tracking-wider">
                         <span className="w-2 h-2 rounded-full bg-[#8B1A1A] animate-pulse" />
                         Ground Layer • Off-Campus Discovery
                     </div>
@@ -74,7 +74,7 @@ export const DwellView: React.FC = () => {
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20 gap-3">
                         <Loader2 className="w-8 h-8 animate-spin text-[#8B1A1A]" />
-                        <span className="text-xs text-white/60 font-mono">Loading Musanze listings...</span>
+                        <span className="text-xs text-white/60">Loading Musanze listings...</span>
                     </div>
                 ) : filtered.length === 0 ? (
                     <div className="text-center py-16 bg-white/[0.02] border border-white/5 rounded-2xl mt-6">

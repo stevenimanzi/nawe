@@ -19,7 +19,7 @@ export const HousingCard: React.FC<HousingCardProps> = ({ listing, onContact }) 
                     className="w-full h-full object-cover"
                     loading="lazy"
                 />
-                <div className="absolute top-3 right-3 bg-[#050B14]/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-xs font-mono font-bold text-white">
+                <div className="absolute top-3 right-3 bg-[#050B14]/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-xs font-bold text-white">
                     {listing.monthly_rent.toLocaleString()} RWF<span className="text-[10px] text-white/60">/mo</span>
                 </div>
                 {amenities?.distance_to_campus_meters && (

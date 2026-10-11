@@ -14,7 +14,7 @@ export const TopBar: React.FC = () => {
             <div className="max-w-5xl mx-auto flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-black tracking-widest text-white">NAWE</span>
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/10 text-white/70">
+                    <span className="text-[10px] uppercase px-1.5 py-0.5 rounded bg-white/10 text-white/70">
                         RP Musanze
                     </span>
                 </div>
@@ -49,7 +49,7 @@ export const TopBar: React.FC = () => {
                     className="flex items-center gap-1 text-xs text-[#39FF14] hover:opacity-80 transition-opacity"
                 >
                     <ShieldCheck className="w-4 h-4" />
-                    <span className="hidden sm:inline font-mono text-[11px]">ID Verified</span>
+                    <span className="hidden sm:inline text-[11px]">ID Verified</span>
                 </button>
             </div>
         </header>
