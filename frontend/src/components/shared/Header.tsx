@@ -23,6 +23,8 @@ import {
     Wrench,
     X,
 } from 'lucide-react';
+import { CONTACT } from '@/lib/contact';
+import { SOCIALS } from './socials';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -48,40 +50,6 @@ const CATEGORIES = [
 ];
 
 const LOCATIONS = ['All Rwanda', 'Kigali', 'Musanze', 'Huye', 'Rubavu', 'Muhanga', 'Rwamagana'];
-
-const SOCIALS = [
-    {
-        label: 'Facebook',
-        href: '#',
-        icon: <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />,
-    },
-    {
-        label: 'X',
-        href: '#',
-        icon: <path d="M4 4l7.5 9.5L4 20h2l6.4-5.6L17 20h3l-7.9-10L19.5 4h-2l-5.9 5.2L7 4H4z" />,
-    },
-    {
-        label: 'Instagram',
-        href: '#',
-        icon: (
-            <>
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="0.6" />
-            </>
-        ),
-    },
-    {
-        label: 'YouTube',
-        href: '#',
-        icon: (
-            <>
-                <rect x="2" y="5" width="20" height="14" rx="4" />
-                <path d="M10 9.5v5l4.5-2.5z" />
-            </>
-        ),
-    },
-];
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -186,12 +154,12 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
             <div className="w-full bg-yellow-400 text-emerald-950">
                 <div className="mx-auto flex h-10 w-full items-center justify-between gap-4 px-[30px] text-xs">
                     <a
-                        href="tel:+250788123456"
+                        href={CONTACT.phoneHref}
                         className="flex shrink-0 items-center gap-1.5 font-medium hover:underline"
                     >
                         <Phone className="size-3.5" aria-hidden />
                         <span className="hidden sm:inline">Call Us:</span>
-                        <span className="font-bold">+250 788 123 456</span>
+                        <span className="font-bold">{CONTACT.phoneDisplay}</span>
                     </a>
 
                     <p className="min-w-0 truncate text-center font-medium">
@@ -235,7 +203,8 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
             {/* ───────── Primary navigation ───────── */}
             <header className="sticky top-0 z-50 w-full bg-[#15803D] text-white shadow-[0_2px_12px_rgba(6,78,59,0.25)]">
                 {/* Row 1 — brand · location · search · actions */}
-                <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8">
+                <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8 xl:grid xl:grid-cols-[1fr_minmax(0,48rem)_1fr]">
+                    <div className="flex shrink-0 items-center gap-8">
                     <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="NAWE home">
                         <span className="grid size-10 place-items-center rounded-full bg-yellow-400 font-heading text-xl font-black text-emerald-950">
                             N
@@ -262,12 +231,13 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         </span>
                         <ChevronDown className="pointer-events-none absolute bottom-1 right-0 size-4 text-white/70" aria-hidden />
                     </label>
+                    </div>
 
                     {/* Search (desktop / tablet) */}
                     <form
                         onSubmit={onSearch}
                         role="search"
-                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm ring-yellow-400 transition-shadow focus-within:ring-4 md:flex lg:max-w-2xl"
+                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm ring-yellow-400 transition-shadow focus-within:ring-4 md:flex mx-auto w-full max-w-3xl"
                     >
                         <div className="relative flex h-full shrink-0 items-center">
                             <select
@@ -306,7 +276,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     </form>
 
                     {/* Actions */}
-                    <div className="ml-auto flex shrink-0 items-center gap-1 md:ml-0">
+                    <div className="ml-auto flex shrink-0 items-center gap-1 md:ml-0 xl:justify-self-end">
                         <IconButton label="Wishlist" to="/wishlist" count={wishlistCount}>
                             <Heart className="size-5" aria-hidden />
                         </IconButton>
