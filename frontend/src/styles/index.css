@@ -1,20 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap');
 @import "tailwindcss";
-
-@theme {
-    --color-primary: #15803D;
-    --color-primary-hover: #166534;
-    --color-primary-light: #DCFCE7;
-    --color-primary-dark: #14532D;
-    --color-surface: #FFFFFF;
-    --color-background: #FFFFFF;
-    --color-subtle: #F8FAFC;
-    --color-border: #E2E8F0;
-    --color-text-main: #0F172A;
-    --color-text-muted: #64748B;
-    --font-heading: 'Outfit', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-}
 
 *,
 *::before,
@@ -39,8 +24,8 @@ html, body {
     overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', sans-serif;
+h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Outfit', -apple-system, sans-serif;
 }
 
 .font-mono-price {
