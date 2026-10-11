@@ -1,0 +1,27 @@
+# Dependencies
+backend/vendor/
+frontend/node_modules/
+
+# Laravel
+backend/.env
+backend/.env.backup
+backend/.env.production
+backend/storage/logs/*.log
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/views/
+backend/bootstrap/cache/*.php
+backend/public/hot
+backend/public/storage
+
+# Vite / Frontend build
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# IDEs & OS
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
