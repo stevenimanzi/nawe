@@ -149,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
         }`;
 
     return (
-        <>
+        <div className="sticky top-0 z-50 w-full">
             {/* ───────── Announcement bar ───────── */}
             <div className="w-full bg-yellow-400 text-emerald-950">
                 <div className="mx-auto flex h-10 w-full items-center justify-between gap-4 px-[30px] text-xs">
@@ -201,7 +201,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
             </div>
 
             {/* ───────── Primary navigation ───────── */}
-            <header className="sticky top-0 z-50 w-full bg-[#15803D] text-white shadow-[0_2px_12px_rgba(6,78,59,0.25)]">
+            <header className="w-full bg-[#15803D] text-white shadow-[0_2px_12px_rgba(6,78,59,0.25)]">
                 {/* Row 1 — brand · location · search · actions */}
                 <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8 xl:grid xl:grid-cols-[1fr_minmax(0,48rem)_1fr]">
                     <div className="flex shrink-0 items-center gap-8">
@@ -424,7 +424,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                 {mobileOpen && (
                     <div
                         id="mobile-menu"
-                        className="max-h-[calc(100dvh-7.5rem)] overflow-y-auto border-t border-white/10 bg-emerald-900 lg:hidden"
+                        className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-white/10 bg-emerald-900 lg:hidden"
                     >
                         <div className="mx-auto w-full space-y-6 px-[30px] py-6">
                             <nav aria-label="Primary mobile">
@@ -503,6 +503,6 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     </div>
                 )}
             </header>
-        </>
+        </div>
     );
 };

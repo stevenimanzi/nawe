@@ -178,37 +178,37 @@ export const Footer: React.FC = () => {
                     {/* Contact */}
                     <div className="md:col-span-2 lg:col-span-1">
                         <h3 className="font-heading text-base font-bold">Contact Info</h3>
-                        <ul className="mt-5 space-y-4 text-sm">
-                            <li className="flex items-start gap-3">
-                                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-yellow-300">
-                                    <Phone className="size-4" aria-hidden />
+                        <ul className="mt-5 space-y-5 text-sm">
+                            <li className="flex items-center gap-3">
+                                <span className="grid size-6 shrink-0 place-items-center text-white">
+                                    <Phone className="size-5" aria-hidden />
                                 </span>
-                                <a href={CONTACT.phoneHref} className="pt-1.5 font-semibold hover:text-yellow-300">
+                                <a href={CONTACT.phoneHref} className="font-semibold hover:text-yellow-300">
                                     {CONTACT.phoneDisplay}
                                 </a>
                             </li>
-                            <li className="flex items-start gap-3">
-                                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-yellow-300">
-                                    <Mail className="size-4" aria-hidden />
+                            <li className="flex items-center gap-3">
+                                <span className="grid size-6 shrink-0 place-items-center text-white">
+                                    <Mail className="size-5" aria-hidden />
                                 </span>
                                 <a
                                     href={`mailto:${CONTACT.email}`}
-                                    className="break-all pt-1.5 text-emerald-100/90 hover:text-yellow-300"
+                                    className="break-all text-emerald-100/90 hover:text-yellow-300"
                                 >
                                     {CONTACT.email}
                                 </a>
                             </li>
-                            <li className="flex items-start gap-3">
-                                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-yellow-300">
-                                    <MapPin className="size-4" aria-hidden />
+                            <li className="flex items-center gap-3">
+                                <span className="grid size-6 shrink-0 place-items-center text-white">
+                                    <MapPin className="size-5" aria-hidden />
                                 </span>
-                                <span className="pt-1.5 text-emerald-100/90">{CONTACT.address}</span>
+                                <span className="text-emerald-100/90">{CONTACT.address}</span>
                             </li>
-                            <li className="flex items-start gap-3">
-                                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-yellow-300">
-                                    <Clock className="size-4" aria-hidden />
+                            <li className="flex items-center gap-3">
+                                <span className="grid size-6 shrink-0 place-items-center text-white">
+                                    <Clock className="size-5" aria-hidden />
                                 </span>
-                                <span className="pt-1.5 text-emerald-100/90">{CONTACT.hours}</span>
+                                <span className="text-emerald-100/90">{CONTACT.hours}</span>
                             </li>
                         </ul>
 
