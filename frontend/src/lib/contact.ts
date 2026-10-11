@@ -5,6 +5,6 @@ export const CONTACT = {
     phoneHref: 'tel:+250796194401',
     whatsappHref: 'https://wa.me/250796194401',
     email: 'support@nawe.rw',
-    address: 'Kigali, Rwanda',
+    address: 'Nyakinama, Musanze, Rwanda',
     hours: 'Mon – Sat, 8:00 – 18:00',
 } as const;

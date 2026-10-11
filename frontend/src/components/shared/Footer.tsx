@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
 import { SOCIALS } from './socials';
+import logoWhite from '@/assets/brand/logo-white.svg';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -86,28 +87,25 @@ export const Footer: React.FC = () => {
                 <div className="grid w-full gap-12 px-[30px] py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)_1.3fr] lg:gap-10">
                     {/* Brand */}
                     <div className="md:col-span-2 lg:col-span-1">
-                        <Link to="/" className="inline-flex items-center gap-2.5" aria-label="NAWE home">
-                            <span className="grid size-11 place-items-center rounded-full bg-yellow-400 font-heading text-xl font-black text-emerald-950">
-                                N
-                            </span>
-                            <span className="font-heading text-3xl font-extrabold tracking-tight">NAWE</span>
+                        <Link to="/" className="inline-flex" aria-label="NAWE home">
+                            <img src={logoWhite} alt="NAWE" className="h-14 w-auto" />
                         </Link>
                         <p className="mt-5 max-w-sm text-sm leading-relaxed text-emerald-100/80">
                             Rwanda's trusted marketplace for second-hand goods and shelter. Every seller is ID
                             verified, so you can buy, rent and move with confidence.
                         </p>
 
-                        <ul className="mt-6 flex items-center gap-2.5">
+                        <ul className="-ml-2.5 mt-5 flex items-center gap-1">
                             {SOCIALS.map((s) => (
                                 <li key={s.label}>
                                     <a
                                         href={s.href}
                                         aria-label={s.label}
-                                        className="grid size-10 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-yellow-400 hover:text-emerald-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
+                                        className="grid size-10 place-items-center text-white transition-colors hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
                                     >
                                         <svg
                                             viewBox="0 0 24 24"
-                                            className="size-[18px]"
+                                            className="size-5"
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="2"

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
     ArrowRight,
@@ -19,12 +19,16 @@ import {
     ShoppingBag,
     Smartphone,
     Sofa,
+    Tag,
     User,
     Wrench,
     X,
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
+import { useDismiss } from '@/hooks/useDismiss';
 import { SOCIALS } from './socials';
+import { SelectMenu, type SelectOption } from './SelectMenu';
+import logoWhite from '@/assets/brand/logo-white.svg';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -40,43 +44,31 @@ const NAV_LINKS: { label: string; to: string; wideOnly?: boolean }[] = [
 ];
 
 const CATEGORIES = [
-    { label: 'Shelter & Gueto', to: '/dwell', icon: BedDouble, hint: 'Rooms, studios, houses' },
-    { label: 'Used Phones', to: '/trade?category=phones', icon: Smartphone, hint: 'Smartphones & tablets' },
-    { label: 'Laptops & Electronics', to: '/trade?category=electronics', icon: Laptop, hint: 'Computers, TVs, audio' },
-    { label: 'Furniture & Beds', to: '/trade?category=furniture', icon: Sofa, hint: 'Sofas, beds, tables' },
-    { label: 'Room Appliances', to: '/trade?category=appliances', icon: Refrigerator, hint: 'Fridges, cookers, fans' },
-    { label: 'Motos & Bikes', to: '/trade?category=vehicles', icon: Bike, hint: 'Motorcycles & bicycles' },
-    { label: 'Workshop Tools', to: '/trade?category=tools', icon: Wrench, hint: 'Hand & power tools' },
+    { key: 'shelter', label: 'Shelter & Gueto', to: '/dwell', icon: BedDouble, hint: 'Rooms, studios, houses' },
+    { key: 'phones', label: 'Used Phones', to: '/trade?category=phones', icon: Smartphone, hint: 'Smartphones & tablets' },
+    { key: 'electronics', label: 'Laptops & Electronics', to: '/trade?category=electronics', icon: Laptop, hint: 'Computers, TVs, audio' },
+    { key: 'furniture', label: 'Furniture & Beds', to: '/trade?category=furniture', icon: Sofa, hint: 'Sofas, beds, tables' },
+    { key: 'appliances', label: 'Room Appliances', to: '/trade?category=appliances', icon: Refrigerator, hint: 'Fridges, cookers, fans' },
+    { key: 'vehicles', label: 'Motos & Bikes', to: '/trade?category=vehicles', icon: Bike, hint: 'Motorcycles & bicycles' },
+    { key: 'tools', label: 'Workshop Tools', to: '/trade?category=tools', icon: Wrench, hint: 'Hand & power tools' },
+];
+
+const MENU_ITEMS = [
+    ...CATEGORIES,
+    { key: 'deals', label: 'Urgent Deals', to: '/deals', icon: Tag, hint: 'Relocating sales, priced to go' },
+];
+
+const CATEGORY_OPTIONS: SelectOption[] = [
+    { value: 'all', label: 'All Categories' },
+    ...CATEGORIES.map((c) => ({ value: c.key, label: c.label })),
 ];
 
 const LOCATIONS = ['All Rwanda', 'Kigali', 'Musanze', 'Huye', 'Rubavu', 'Muhanga', 'Rwamagana'];
+const LOCATION_OPTIONS: SelectOption[] = LOCATIONS.map((l) => ({ value: l, label: l }));
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
-
-/** Closes a popover on outside click or Escape. */
-function useDismiss(open: boolean, onClose: () => void) {
-    const ref = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!open) return;
-        const onPointer = (e: MouseEvent) => {
-            if (ref.current && !ref.current.contains(e.target as Node)) onClose();
-        };
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') onClose();
-        };
-        document.addEventListener('mousedown', onPointer);
-        document.addEventListener('keydown', onKey);
-        return () => {
-            document.removeEventListener('mousedown', onPointer);
-            document.removeEventListener('keydown', onKey);
-        };
-    }, [open, onClose]);
-
-    return ref;
-}
 
 interface IconButtonProps {
     label: string;
@@ -89,7 +81,7 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
     <Link
         to={to}
         aria-label={count > 0 ? `${label} (${count})` : label}
-        className="relative grid size-10 place-items-center rounded-full text-white transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
+        className="relative grid size-10 place-items-center rounded-lg text-white transition-colors hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
     >
         {children}
         {count > 0 && (
@@ -173,17 +165,17 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         </Link>
                     </p>
 
-                    <ul className="hidden shrink-0 items-center gap-2 md:flex">
+                    <ul className="hidden shrink-0 items-center gap-3 md:flex">
                         {SOCIALS.map((s) => (
                             <li key={s.label}>
                                 <a
                                     href={s.href}
                                     aria-label={s.label}
-                                    className="grid size-6 place-items-center rounded-full bg-emerald-900 text-yellow-300 transition-colors hover:bg-emerald-800"
+                                    className="grid size-6 place-items-center text-emerald-950 transition-opacity hover:opacity-60"
                                 >
                                     <svg
                                         viewBox="0 0 24 24"
-                                        className="size-3.5"
+                                        className="size-4"
                                         fill="none"
                                         stroke="currentColor"
                                         strokeWidth="2"
@@ -205,32 +197,35 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                 {/* Row 1 — brand · location · search · actions */}
                 <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8 xl:grid xl:grid-cols-[1fr_minmax(0,48rem)_1fr]">
                     <div className="flex shrink-0 items-center gap-8">
-                    <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="NAWE home">
-                        <span className="grid size-10 place-items-center rounded-full bg-yellow-400 font-heading text-xl font-black text-emerald-950">
-                            N
-                        </span>
-                        <span className="font-heading text-2xl font-extrabold tracking-tight">NAWE</span>
+                    <Link to="/" className="flex shrink-0 items-center" aria-label="NAWE home">
+                        <img src={logoWhite} alt="NAWE" className="h-10 w-auto lg:h-12" />
                     </Link>
 
                     {/* Location */}
-                    <label className="relative hidden shrink-0 items-center gap-2 xl:flex">
-                        <MapPin className="size-5 text-yellow-300" aria-hidden />
-                        <span className="flex flex-col leading-tight">
-                            <span className="text-[11px] font-medium text-white/70">Location</span>
-                            <select
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                                className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-bold text-white focus:outline-none [&>option]:text-slate-900"
-                            >
-                                {LOCATIONS.map((l) => (
-                                    <option key={l} value={l}>
-                                        {l}
-                                    </option>
-                                ))}
-                            </select>
-                        </span>
-                        <ChevronDown className="pointer-events-none absolute bottom-1 right-0 size-4 text-white/70" aria-hidden />
-                    </label>
+                    <SelectMenu
+                        label="Location"
+                        heading="Select location"
+                        value={location}
+                        onChange={setLocation}
+                        options={LOCATION_OPTIONS}
+                        className="hidden shrink-0 xl:block"
+                        triggerClassName="flex cursor-pointer items-center gap-2.5 rounded-lg py-1 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-300"
+                        renderTrigger={(sel, open) => (
+                            <>
+                                <MapPin className="size-5 shrink-0 text-yellow-300" aria-hidden />
+                                <span className="flex flex-col leading-tight">
+                                    <span className="text-[11px] font-medium text-white/70">Location</span>
+                                    <span className="flex items-center gap-1 text-sm font-bold text-white">
+                                        {sel.label}
+                                        <ChevronDown
+                                            className={`size-4 text-white/70 transition-transform ${open ? 'rotate-180' : ''}`}
+                                            aria-hidden
+                                        />
+                                    </span>
+                                </span>
+                            </>
+                        )}
+                    />
                     </div>
 
                     {/* Search (desktop / tablet) */}
@@ -239,24 +234,24 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         role="search"
                         className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm ring-yellow-400 transition-shadow focus-within:ring-4 md:flex mx-auto w-full max-w-3xl"
                     >
-                        <div className="relative flex h-full shrink-0 items-center">
-                            <select
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                aria-label="Search category"
-                                className="h-full cursor-pointer appearance-none bg-transparent pl-3 pr-7 text-[13px] font-semibold text-slate-700 focus:outline-none"
-                            >
-                                <option value="all">All Categories</option>
-                                <option value="shelter">Shelter & Gueto</option>
-                                <option value="phones">Used Phones</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="furniture">Furniture</option>
-                                <option value="appliances">Appliances</option>
-                                <option value="vehicles">Motos & Bikes</option>
-                                <option value="tools">Tools</option>
-                            </select>
-                            <ChevronDown className="pointer-events-none absolute right-2 size-4 text-slate-400" aria-hidden />
-                        </div>
+                        <SelectMenu
+                            label="Search category"
+                            heading="Search in"
+                            value={category}
+                            onChange={setCategory}
+                            options={CATEGORY_OPTIONS}
+                            className="h-full shrink-0"
+                            triggerClassName="flex h-full cursor-pointer items-center gap-1.5 rounded-full pl-3 pr-2 text-[13px] font-semibold text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none"
+                            renderTrigger={(sel, open) => (
+                                <>
+                                    {sel.label}
+                                    <ChevronDown
+                                        className={`size-4 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
+                                        aria-hidden
+                                    />
+                                </>
+                            )}
+                        />
                         <span className="mx-2 h-5 w-px bg-slate-200" aria-hidden />
                         <input
                             type="search"
@@ -292,7 +287,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             aria-expanded={mobileOpen}
                             aria-controls="mobile-menu"
                             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-                            className="ml-1 grid size-10 cursor-pointer place-items-center rounded-full text-white transition-colors hover:bg-white/15 lg:hidden"
+                            className="ml-1 grid size-10 cursor-pointer place-items-center rounded-lg text-white transition-colors hover:text-yellow-300 lg:hidden"
                         >
                             {mobileOpen ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
                         </button>
@@ -342,29 +337,57 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             </button>
 
                             {catOpen && (
-                                <div className="absolute left-0 top-full z-50 mt-3 w-[22rem] rounded-2xl bg-white p-2 text-slate-900 shadow-2xl ring-1 ring-black/5">
-                                    <ul>
-                                        {CATEGORIES.map(({ label, to, icon: Icon, hint }) => (
-                                            <li key={label}>
+                                <div className="absolute left-0 top-full z-50 mt-3 w-[40rem] overflow-hidden rounded-2xl bg-white text-slate-900 shadow-[0_24px_60px_-12px_rgba(6,40,24,0.45)] ring-1 ring-slate-900/5 animate-pop motion-reduce:animate-none">
+                                    <div className="flex items-center justify-between px-6 pb-2 pt-5">
+                                        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                                            Browse by category
+                                        </h2>
+                                        <Link
+                                            to="/trade"
+                                            className="inline-flex items-center gap-1 text-sm font-semibold text-[#15803D] hover:underline"
+                                        >
+                                            View all listings
+                                            <ArrowRight className="size-4" aria-hidden />
+                                        </Link>
+                                    </div>
+
+                                    <ul className="grid grid-cols-2 gap-x-2 gap-y-1 px-3 pb-3">
+                                        {MENU_ITEMS.map(({ key, label, to, icon: Icon, hint }) => (
+                                            <li key={key}>
                                                 <Link
                                                     to={to}
-                                                    className="group flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-emerald-50"
+                                                    className="group flex items-start gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50"
                                                 >
-                                                    <span className="grid size-10 shrink-0 place-items-center rounded-full bg-emerald-50 text-[#15803D] transition-colors group-hover:bg-[#15803D] group-hover:text-white">
-                                                        <Icon className="size-5" aria-hidden />
-                                                    </span>
-                                                    <span className="flex min-w-0 flex-col leading-tight">
-                                                        <span className="text-sm font-bold">{label}</span>
-                                                        <span className="text-xs text-slate-500">{hint}</span>
-                                                    </span>
-                                                    <ArrowRight
-                                                        className="ml-auto size-4 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#15803D]"
+                                                    <Icon
+                                                        className="mt-0.5 size-6 shrink-0 text-[#15803D]"
+                                                        strokeWidth={1.75}
                                                         aria-hidden
                                                     />
+                                                    <span className="min-w-0">
+                                                        <span className="block text-sm font-semibold text-slate-900 transition-colors group-hover:text-[#15803D]">
+                                                            {label}
+                                                        </span>
+                                                        <span className="mt-0.5 block text-[13px] leading-snug text-slate-500">
+                                                            {hint}
+                                                        </span>
+                                                    </span>
                                                 </Link>
                                             </li>
                                         ))}
                                     </ul>
+
+                                    <div className="flex items-center justify-between gap-6 border-t border-slate-100 bg-slate-50 px-6 py-4">
+                                        <p className="text-sm text-slate-600">
+                                            Selling something? Reach buyers across Rwanda.
+                                        </p>
+                                        <Link
+                                            to="/post"
+                                            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-[#15803D] px-4 text-sm font-bold text-white transition-colors hover:bg-[#0F5132]"
+                                        >
+                                            <Plus className="size-4" aria-hidden />
+                                            Post Listing
+                                        </Link>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -397,14 +420,21 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 </button>
 
                                 {recentOpen && (
-                                    <div className="absolute right-0 top-full z-50 mt-3 w-72 rounded-2xl bg-white p-6 text-center text-slate-900 shadow-2xl ring-1 ring-black/5">
-                                        <span className="mx-auto grid size-12 place-items-center rounded-full bg-emerald-50 text-[#15803D]">
-                                            <History className="size-6" aria-hidden />
-                                        </span>
-                                        <p className="mt-3 text-sm font-bold">Nothing viewed yet</p>
-                                        <p className="mt-1 text-xs text-slate-500">
-                                            Listings you open will show up here so you can find them again.
-                                        </p>
+                                    <div className="absolute right-0 top-full z-50 mt-3 w-80 rounded-2xl bg-white p-6 text-slate-900 shadow-[0_24px_60px_-12px_rgba(6,40,24,0.45)] ring-1 ring-slate-900/5 animate-pop motion-reduce:animate-none">
+                                        <div className="flex flex-col items-center text-center">
+                                            <History className="size-8 text-[#15803D]" strokeWidth={1.5} aria-hidden />
+                                            <p className="mt-4 text-sm font-semibold">Nothing viewed yet</p>
+                                            <p className="mt-1 text-[13px] leading-relaxed text-slate-500">
+                                                Listings you open will show up here so you can find them again.
+                                            </p>
+                                            <Link
+                                                to="/trade"
+                                                className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#15803D] hover:underline"
+                                            >
+                                                Browse the marketplace
+                                                <ArrowRight className="size-4" aria-hidden />
+                                            </Link>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -454,12 +484,12 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 <h2 className="px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-yellow-300">
                                     Categories
                                 </h2>
-                                <ul className="mt-2 grid grid-cols-2 gap-2">
+                                <ul className="mt-2 grid grid-cols-2 gap-x-2">
                                     {CATEGORIES.map(({ label, to, icon: Icon }) => (
                                         <li key={label}>
                                             <Link
                                                 to={to}
-                                                className="flex h-12 items-center gap-2.5 rounded-xl bg-white/5 px-3 text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10"
+                                                className="flex h-12 items-center gap-2.5 px-4 text-[13px] font-semibold text-white/90 transition-colors hover:text-yellow-300"
                                             >
                                                 <Icon className="size-4 shrink-0 text-yellow-300" aria-hidden />
                                                 <span className="truncate">{label}</span>
@@ -470,7 +500,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             </div>
 
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                <label className="flex items-center gap-2 rounded-xl bg-white/5 px-4 py-3">
+                                <label className="flex items-center gap-2 rounded-xl border border-white/20 px-4 py-3">
                                     <MapPin className="size-5 shrink-0 text-yellow-300" aria-hidden />
                                     <select
                                         value={location}
