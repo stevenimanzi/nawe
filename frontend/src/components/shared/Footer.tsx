@@ -24,6 +24,7 @@ const LINK_GROUPS: { title: string; links: { label: string; to: string }[] }[] =
     {
         title: 'Marketplace',
         links: [
+            { label: 'Rent from Neighbours', to: '/trade?category=rentals' },
             { label: 'Used Phones', to: '/trade?category=phones' },
             { label: 'Laptops & Electronics', to: '/trade?category=electronics' },
             { label: 'Furniture & Beds', to: '/trade?category=furniture' },

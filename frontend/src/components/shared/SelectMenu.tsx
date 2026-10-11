@@ -123,7 +123,7 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                             {heading}
                         </p>
                     )}
-                    <ul id={id} role="listbox" aria-label={label} className="max-h-72 overflow-y-auto">
+                    <ul id={id} role="listbox" aria-label={label} className="">
                         {options.map((o, i) => {
                             const isSelected = o.value === value;
                             return (

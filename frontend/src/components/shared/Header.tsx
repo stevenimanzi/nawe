@@ -3,25 +3,17 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
     ArrowRight,
     BadgeCheck,
-    BedDouble,
-    Bike,
     ChevronDown,
     Heart,
-    History,
-    Laptop,
     LayoutGrid,
+    LocateFixed,
     MapPin,
     Menu,
     Phone,
     Plus,
-    Refrigerator,
     Search,
     ShoppingBag,
-    Smartphone,
-    Sofa,
-    Tag,
     User,
-    Wrench,
     X,
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
@@ -40,22 +32,17 @@ const NAV_LINKS: { label: string; to: string; wideOnly?: boolean }[] = [
     { label: 'Shelter & Gueto', to: '/dwell' },
     { label: 'Urgent Deals', to: '/deals' },
     { label: 'Verified Sellers', to: '/kyc', wideOnly: true },
-    { label: 'Safety', to: '/safety', wideOnly: true },
 ];
 
 const CATEGORIES = [
-    { key: 'shelter', label: 'Shelter & Gueto', to: '/dwell', icon: BedDouble, hint: 'Rooms, studios, houses' },
-    { key: 'phones', label: 'Used Phones', to: '/trade?category=phones', icon: Smartphone, hint: 'Smartphones & tablets' },
-    { key: 'electronics', label: 'Laptops & Electronics', to: '/trade?category=electronics', icon: Laptop, hint: 'Computers, TVs, audio' },
-    { key: 'furniture', label: 'Furniture & Beds', to: '/trade?category=furniture', icon: Sofa, hint: 'Sofas, beds, tables' },
-    { key: 'appliances', label: 'Room Appliances', to: '/trade?category=appliances', icon: Refrigerator, hint: 'Fridges, cookers, fans' },
-    { key: 'vehicles', label: 'Motos & Bikes', to: '/trade?category=vehicles', icon: Bike, hint: 'Motorcycles & bicycles' },
-    { key: 'tools', label: 'Workshop Tools', to: '/trade?category=tools', icon: Wrench, hint: 'Hand & power tools' },
-];
-
-const MENU_ITEMS = [
-    ...CATEGORIES,
-    { key: 'deals', label: 'Urgent Deals', to: '/deals', icon: Tag, hint: 'Relocating sales, priced to go' },
+    { key: 'rentals', label: 'Rent from Neighbours', to: '/trade?category=rentals', hint: 'Shoes, suits, washing machines & more' },
+    { key: 'shelter', label: 'Shelter & Gueto', to: '/dwell', hint: 'Rooms, studios, houses' },
+    { key: 'phones', label: 'Used Phones', to: '/trade?category=phones', hint: 'Smartphones & tablets' },
+    { key: 'electronics', label: 'Laptops & Electronics', to: '/trade?category=electronics', hint: 'Computers, TVs, audio' },
+    { key: 'furniture', label: 'Furniture & Beds', to: '/trade?category=furniture', hint: 'Sofas, beds, tables' },
+    { key: 'appliances', label: 'Room Appliances', to: '/trade?category=appliances', hint: 'Fridges, cookers, fans' },
+    { key: 'vehicles', label: 'Motos & Bikes', to: '/trade?category=vehicles', hint: 'Motorcycles & bicycles' },
+    { key: 'tools', label: 'Workshop Tools', to: '/trade?category=tools', hint: 'Hand & power tools' },
 ];
 
 const CATEGORY_OPTIONS: SelectOption[] = [
@@ -110,10 +97,9 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
     const [location, setLocation] = useState('All Rwanda');
     const [mobileOpen, setMobileOpen] = useState(false);
     const [catOpen, setCatOpen] = useState(false);
-    const [recentOpen, setRecentOpen] = useState(false);
+    const [locating, setLocating] = useState(false);
 
     const catRef = useDismiss(catOpen, () => setCatOpen(false));
-    const recentRef = useDismiss(recentOpen, () => setRecentOpen(false));
 
     // Close every popover when the route changes.
     const [prevPath, setPrevPath] = useState(pathname);
@@ -121,8 +107,32 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
         setPrevPath(pathname);
         setMobileOpen(false);
         setCatOpen(false);
-        setRecentOpen(false);
     }
+
+    /** Sends the user to listings near them; falls back to their chosen location if GPS is unavailable or denied. */
+    const goNearMe = () => {
+        const fallback = () => {
+            setLocating(false);
+            navigate('/trade?near=1');
+        };
+        if (!('geolocation' in navigator)) return fallback();
+        setLocating(true);
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                setLocating(false);
+                navigate('/trade?near=1', {
+                    state: {
+                        coords: {
+                            lat: Number(pos.coords.latitude.toFixed(3)),
+                            lng: Number(pos.coords.longitude.toFixed(3)),
+                        },
+                    },
+                });
+            },
+            fallback,
+            { timeout: 8000, maximumAge: 300_000 },
+        );
+    };
 
     const onSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -232,7 +242,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     <form
                         onSubmit={onSearch}
                         role="search"
-                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm ring-yellow-400 transition-shadow focus-within:ring-4 md:flex mx-auto w-full max-w-3xl"
+                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm md:flex mx-auto w-full max-w-3xl"
                     >
                         <SelectMenu
                             label="Search category"
@@ -296,7 +306,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                 {/* Search (mobile) */}
                 <form onSubmit={onSearch} role="search" className="px-[30px] pb-3 md:hidden">
-                    <div className="flex h-11 items-center rounded-full bg-white pl-4 pr-1.5 text-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-yellow-400">
+                    <div className="flex h-11 items-center rounded-full bg-white pl-4 pr-1.5 text-slate-900 shadow-sm">
                         <input
                             type="search"
                             value={query}
@@ -315,7 +325,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     </div>
                 </form>
 
-                {/* Row 2 — categories · links · recently viewed (desktop) */}
+                {/* Row 2 — categories · links · near me (desktop) */}
                 <div className="hidden border-t border-white/10 lg:block">
                     <div className="mx-auto flex h-14 w-full items-center gap-6 px-[30px] xl:gap-8">
                         {/* Browse categories */}
@@ -352,24 +362,17 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                     </div>
 
                                     <ul className="grid grid-cols-2 gap-x-2 gap-y-1 px-3 pb-3">
-                                        {MENU_ITEMS.map(({ key, label, to, icon: Icon, hint }) => (
+                                        {CATEGORIES.map(({ key, label, to, hint }) => (
                                             <li key={key}>
                                                 <Link
                                                     to={to}
-                                                    className="group flex items-start gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50"
+                                                    className="group block rounded-xl px-4 py-3.5 transition-colors hover:bg-slate-50"
                                                 >
-                                                    <Icon
-                                                        className="mt-0.5 size-6 shrink-0 text-[#15803D]"
-                                                        strokeWidth={1.75}
-                                                        aria-hidden
-                                                    />
-                                                    <span className="min-w-0">
-                                                        <span className="block text-sm font-semibold text-slate-900 transition-colors group-hover:text-[#15803D]">
-                                                            {label}
-                                                        </span>
-                                                        <span className="mt-0.5 block text-[13px] leading-snug text-slate-500">
-                                                            {hint}
-                                                        </span>
+                                                    <span className="flex items-center gap-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-[#15803D]">
+                                                        {label}
+                                                    </span>
+                                                    <span className="mt-0.5 block text-[13px] leading-snug text-slate-500">
+                                                        {hint}
                                                     </span>
                                                 </Link>
                                             </li>
@@ -403,41 +406,15 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                         {/* Right cluster */}
                         <div className="ml-auto flex shrink-0 items-center gap-4">
-                            <div ref={recentRef} className="relative hidden xl:block">
-                                <button
-                                    type="button"
-                                    onClick={() => setRecentOpen((o) => !o)}
-                                    aria-expanded={recentOpen}
-                                    aria-haspopup="true"
-                                    className="flex h-10 cursor-pointer items-center gap-1.5 text-sm font-semibold text-yellow-300 transition-colors hover:text-yellow-200"
-                                >
-                                    <History className="size-4" aria-hidden />
-                                    Recently Viewed
-                                    <ChevronDown
-                                        className={`size-4 transition-transform ${recentOpen ? 'rotate-180' : ''}`}
-                                        aria-hidden
-                                    />
-                                </button>
-
-                                {recentOpen && (
-                                    <div className="absolute right-0 top-full z-50 mt-3 w-80 rounded-2xl bg-white p-6 text-slate-900 shadow-[0_24px_60px_-12px_rgba(6,40,24,0.45)] ring-1 ring-slate-900/5 animate-pop motion-reduce:animate-none">
-                                        <div className="flex flex-col items-center text-center">
-                                            <History className="size-8 text-[#15803D]" strokeWidth={1.5} aria-hidden />
-                                            <p className="mt-4 text-sm font-semibold">Nothing viewed yet</p>
-                                            <p className="mt-1 text-[13px] leading-relaxed text-slate-500">
-                                                Listings you open will show up here so you can find them again.
-                                            </p>
-                                            <Link
-                                                to="/trade"
-                                                className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#15803D] hover:underline"
-                                            >
-                                                Browse the marketplace
-                                                <ArrowRight className="size-4" aria-hidden />
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                            <button
+                                type="button"
+                                onClick={goNearMe}
+                                disabled={locating}
+                                className="flex h-10 cursor-pointer items-center gap-2 text-sm font-semibold text-yellow-300 transition-colors hover:text-yellow-200 disabled:cursor-wait disabled:opacity-70"
+                            >
+                                <LocateFixed className={`size-4 ${locating ? 'animate-pulse' : ''}`} aria-hidden />
+                                {locating ? 'Locating…' : 'Near Me'}
+                            </button>
 
                             <Link
                                 to="/post"
@@ -480,18 +457,27 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 </ul>
                             </nav>
 
+                            <button
+                                type="button"
+                                onClick={goNearMe}
+                                disabled={locating}
+                                className="flex h-12 w-full cursor-pointer items-center justify-between rounded-xl px-4 text-[15px] font-semibold text-yellow-300 disabled:cursor-wait disabled:opacity-70"
+                            >
+                                {locating ? 'Locating…' : 'Near Me'}
+                                <LocateFixed className={`size-4 ${locating ? 'animate-pulse' : ''}`} aria-hidden />
+                            </button>
+
                             <div>
                                 <h2 className="px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-yellow-300">
                                     Categories
                                 </h2>
                                 <ul className="mt-2 grid grid-cols-2 gap-x-2">
-                                    {CATEGORIES.map(({ label, to, icon: Icon }) => (
+                                    {CATEGORIES.map(({ label, to }) => (
                                         <li key={label}>
                                             <Link
                                                 to={to}
                                                 className="flex h-12 items-center gap-2.5 px-4 text-[13px] font-semibold text-white/90 transition-colors hover:text-yellow-300"
                                             >
-                                                <Icon className="size-4 shrink-0 text-yellow-300" aria-hidden />
                                                 <span className="truncate">{label}</span>
                                             </Link>
                                         </li>
