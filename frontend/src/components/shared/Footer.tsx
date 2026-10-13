@@ -63,7 +63,7 @@ const LEGAL = [
 ];
 
 const linkClass =
-    'inline-flex items-center rounded text-sm text-emerald-100/80 transition-colors hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300';
+    'inline-flex items-center rounded text-sm text-emerald-100/80 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
 
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
@@ -103,7 +103,7 @@ export const Footer: React.FC = () => {
                                     <a
                                         href={s.href}
                                         aria-label={s.label}
-                                        className="grid size-10 place-items-center text-white transition-colors hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
+                                        className="grid size-10 place-items-center text-white transition-colors hover:text-white/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                     >
                                         <svg
                                             viewBox="0 0 24 24"
@@ -126,7 +126,7 @@ export const Footer: React.FC = () => {
                             <label htmlFor="footer-email" className="sr-only">
                                 Email address
                             </label>
-                            <div className="flex h-12 items-center rounded-full bg-white pl-5 pr-1 text-slate-900 shadow-lg focus-within:ring-4 focus-within:ring-yellow-400/60">
+                            <div className="flex h-12 items-center rounded-full bg-white pl-5 pr-1 text-slate-900 shadow-lg focus-within:ring-4 focus-within:ring-black/20">
                                 <input
                                     id="footer-email"
                                     type="email"
@@ -141,7 +141,7 @@ export const Footer: React.FC = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="inline-flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-yellow-400 px-5 text-sm font-bold text-emerald-950 transition-colors hover:bg-yellow-300"
+                                    className="inline-flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                                 >
                                     Subscribe
                                     <ArrowRight className="size-4" aria-hidden />
@@ -149,7 +149,7 @@ export const Footer: React.FC = () => {
                             </div>
                             <p
                                 role="status"
-                                className={`mt-2 flex items-center gap-2 pl-5 text-sm text-yellow-300 transition-opacity ${
+                                className={`mt-2 flex items-center gap-2 pl-5 text-sm text-emerald-300 transition-opacity ${
                                     subscribed ? 'opacity-100' : 'opacity-0'
                                 }`}
                             >
@@ -183,7 +183,7 @@ export const Footer: React.FC = () => {
                                 <span className="grid size-6 shrink-0 place-items-center text-white">
                                     <Phone className="size-5" aria-hidden />
                                 </span>
-                                <a href={CONTACT.phoneHref} className="font-semibold hover:text-yellow-300">
+                                <a href={CONTACT.phoneHref} className="font-semibold hover:text-white">
                                     {CONTACT.phoneDisplay}
                                 </a>
                             </li>
@@ -193,7 +193,7 @@ export const Footer: React.FC = () => {
                                 </span>
                                 <a
                                     href={`mailto:${CONTACT.email}`}
-                                    className="break-all text-emerald-100/90 hover:text-yellow-300"
+                                    className="break-all text-emerald-100/90 hover:text-white"
                                 >
                                     {CONTACT.email}
                                 </a>
@@ -216,7 +216,7 @@ export const Footer: React.FC = () => {
                             href={CONTACT.whatsappHref}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-yellow-400 px-5 text-sm font-bold text-emerald-950 transition-colors hover:bg-yellow-300"
+                            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                         >
                             <MessageCircle className="size-4" aria-hidden />
                             Chat on WhatsApp
@@ -232,7 +232,7 @@ export const Footer: React.FC = () => {
                         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
                             {LEGAL.map((l) => (
                                 <li key={l.label}>
-                                    <Link to={l.to} className="transition-colors hover:text-yellow-300">
+                                    <Link to={l.to} className="transition-colors hover:text-white">
                                         {l.label}
                                     </Link>
                                 </li>

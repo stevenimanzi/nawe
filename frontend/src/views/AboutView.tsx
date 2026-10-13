@@ -67,7 +67,7 @@ export const AboutView: React.FC = () => (
                 <div className="mt-8 flex flex-wrap gap-3">
                     <Link
                         to="/trade"
-                        className="inline-flex h-12 items-center gap-2 rounded-full bg-yellow-400 px-7 text-sm font-semibold text-emerald-950 transition-colors hover:bg-yellow-300"
+                        className="inline-flex h-12 items-center gap-2 rounded-full bg-black px-7 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                     >
                         Explore the marketplace
                         <ArrowRight className="size-4" aria-hidden />
@@ -185,7 +185,7 @@ export const AboutView: React.FC = () => (
                 <div className="flex flex-wrap gap-3">
                     <Link
                         to="/post"
-                        className="inline-flex h-12 items-center rounded-full bg-yellow-400 px-7 text-sm font-semibold text-emerald-950 transition-colors hover:bg-yellow-300"
+                        className="inline-flex h-12 items-center rounded-full bg-black px-7 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                     >
                         Post a listing
                     </Link>

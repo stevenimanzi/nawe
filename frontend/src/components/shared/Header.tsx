@@ -68,11 +68,11 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
     <Link
         to={to}
         aria-label={count > 0 ? `${label} (${count})` : label}
-        className="relative grid size-10 place-items-center rounded-lg text-white transition-colors hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
+        className="relative grid size-10 place-items-center rounded-lg text-white transition-colors hover:text-white/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >
         {children}
         {count > 0 && (
-            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-yellow-400 px-1 text-[10px] font-extrabold leading-none text-emerald-950 ring-2 ring-[#15803D]">
+            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-black px-1 text-[10px] font-extrabold leading-none text-white ring-2 ring-[#15803D]">
                 {count > 99 ? '99+' : count}
             </span>
         )}
@@ -145,15 +145,15 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
     const navLinkClass = (wideOnly?: boolean) => ({ isActive }: { isActive: boolean }) =>
         `relative h-14 items-center text-sm ${wideOnly ? 'hidden xl:inline-flex' : 'inline-flex'} font-semibold transition-colors ${
-            isActive ? 'text-yellow-300' : 'text-white/85 hover:text-white'
-        } after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:rounded-t-full after:bg-yellow-400 after:transition-transform after:origin-center ${
+            isActive ? 'text-white font-bold' : 'text-white/85 hover:text-white'
+        } after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:rounded-t-full after:bg-black after:transition-transform after:origin-center ${
             isActive ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-50'
         }`;
 
     return (
         <div className="sticky top-0 z-50 w-full">
             {/* ───────── Announcement bar ───────── */}
-            <div className="w-full bg-yellow-400 text-emerald-950">
+            <div className="w-full bg-black text-white">
                 <div className="mx-auto flex h-10 w-full items-center justify-between gap-4 px-[30px] text-xs">
                     <a
                         href={CONTACT.phoneHref}
@@ -181,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 <a
                                     href={s.href}
                                     aria-label={s.label}
-                                    className="grid size-6 place-items-center text-emerald-950 transition-opacity hover:opacity-60"
+                                    className="grid size-6 place-items-center text-white/90 transition-opacity hover:opacity-100"
                                 >
                                     <svg
                                         viewBox="0 0 24 24"
@@ -219,10 +219,10 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         onChange={setLocation}
                         options={LOCATION_OPTIONS}
                         className="hidden shrink-0 xl:block"
-                        triggerClassName="flex cursor-pointer items-center gap-2.5 rounded-lg py-1 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-300"
+                        triggerClassName="flex cursor-pointer items-center gap-2.5 rounded-lg py-1 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                         renderTrigger={(sel, open) => (
                             <>
-                                <MapPin className="size-5 shrink-0 text-yellow-300" aria-hidden />
+                                <MapPin className="size-5 shrink-0 text-white" aria-hidden />
                                 <span className="flex flex-col leading-tight">
                                     <span className="text-[11px] font-medium text-white/70">Location</span>
                                     <span className="flex items-center gap-1 text-sm font-bold text-white">
@@ -297,7 +297,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             aria-expanded={mobileOpen}
                             aria-controls="mobile-menu"
                             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-                            className="ml-1 grid size-10 cursor-pointer place-items-center rounded-lg text-white transition-colors hover:text-yellow-300 lg:hidden"
+                            className="ml-1 grid size-10 cursor-pointer place-items-center rounded-lg text-white transition-colors hover:text-white/80 lg:hidden"
                         >
                             {mobileOpen ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
                         </button>
@@ -335,7 +335,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 onClick={() => setCatOpen((o) => !o)}
                                 aria-expanded={catOpen}
                                 aria-haspopup="true"
-                                className="flex h-10 cursor-pointer items-center gap-2 rounded-full bg-yellow-400 px-5 text-sm font-bold text-emerald-950 transition-colors hover:bg-yellow-300"
+                                className="flex h-10 cursor-pointer items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                             >
                                 <LayoutGrid className="size-4" aria-hidden />
                                 <span className="xl:hidden">Categories</span>
@@ -410,7 +410,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 type="button"
                                 onClick={goNearMe}
                                 disabled={locating}
-                                className="flex h-10 cursor-pointer items-center gap-2 text-sm font-semibold text-yellow-300 transition-colors hover:text-yellow-200 disabled:cursor-wait disabled:opacity-70"
+                                className="flex h-10 cursor-pointer items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-white/80 disabled:cursor-wait disabled:opacity-70"
                             >
                                 <LocateFixed className={`size-4 ${locating ? 'animate-pulse' : ''}`} aria-hidden />
                                 {locating ? 'Locating…' : 'Near Me'}
@@ -444,7 +444,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                                 className={({ isActive }) =>
                                                     `flex h-12 items-center justify-between rounded-xl px-4 text-[15px] font-semibold transition-colors ${
                                                         isActive
-                                                            ? 'bg-white/10 text-yellow-300'
+                                                            ? 'bg-black text-white font-bold'
                                                             : 'text-white/90 hover:bg-white/5'
                                                     }`
                                                 }
@@ -461,14 +461,14 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 type="button"
                                 onClick={goNearMe}
                                 disabled={locating}
-                                className="flex h-12 w-full cursor-pointer items-center justify-between rounded-xl px-4 text-[15px] font-semibold text-yellow-300 disabled:cursor-wait disabled:opacity-70"
+                                className="flex h-12 w-full cursor-pointer items-center justify-between rounded-xl px-4 text-[15px] font-semibold text-white disabled:cursor-wait disabled:opacity-70"
                             >
                                 {locating ? 'Locating…' : 'Near Me'}
                                 <LocateFixed className={`size-4 ${locating ? 'animate-pulse' : ''}`} aria-hidden />
                             </button>
 
                             <div>
-                                <h2 className="px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-yellow-300">
+                                <h2 className="px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/70">
                                     Categories
                                 </h2>
                                 <ul className="mt-2 grid grid-cols-2 gap-x-2">
@@ -476,7 +476,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                         <li key={label}>
                                             <Link
                                                 to={to}
-                                                className="flex h-12 items-center gap-2.5 px-4 text-[13px] font-semibold text-white/90 transition-colors hover:text-yellow-300"
+                                                className="flex h-12 items-center gap-2.5 px-4 text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
                                             >
                                                 <span className="truncate">{label}</span>
                                             </Link>
@@ -487,7 +487,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <label className="flex items-center gap-2 rounded-xl border border-white/20 px-4 py-3">
-                                    <MapPin className="size-5 shrink-0 text-yellow-300" aria-hidden />
+                                    <MapPin className="size-5 shrink-0 text-white" aria-hidden />
                                     <select
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
@@ -504,7 +504,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                                 <Link
                                     to="/post"
-                                    className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-yellow-400 px-6 text-sm font-bold text-emerald-950 transition-colors hover:bg-yellow-300"
+                                    className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-black px-6 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
                                 >
                                     <Plus className="size-4" aria-hidden />
                                     Post Listing
@@ -512,7 +512,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             </div>
 
                             <p className="flex items-center gap-2 px-1 text-xs text-white/70">
-                                <BadgeCheck className="size-4 text-yellow-300" aria-hidden />
+                                <BadgeCheck className="size-4 text-emerald-300" aria-hidden />
                                 Every seller on NAWE is ID verified.
                             </p>
                         </div>
