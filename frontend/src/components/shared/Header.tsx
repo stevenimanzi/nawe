@@ -72,7 +72,7 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
     >
         {children}
         {count > 0 && (
-            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-black px-1 text-[10px] font-extrabold leading-none text-white ring-2 ring-[#15803D]">
+            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-black px-1 text-[10px] font-extrabold leading-none text-white ring-2 ring-[#0D1B14]">
                 {count > 99 ? '99+' : count}
             </span>
         )}
@@ -203,7 +203,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
             </div>
 
             {/* ───────── Primary navigation ───────── */}
-            <header className="w-full bg-[#15803D] text-white shadow-[0_2px_12px_rgba(6,78,59,0.25)]">
+            <header className="w-full border-b border-white/10 bg-panel text-white shadow-[0_8px_24px_rgba(0,0,0,0.45)]">
                 {/* Row 1 — brand · location · search · actions */}
                 <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8 xl:grid xl:grid-cols-[1fr_minmax(0,48rem)_1fr]">
                     <div className="flex shrink-0 items-center gap-8">
@@ -242,7 +242,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     <form
                         onSubmit={onSearch}
                         role="search"
-                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-white pl-2 pr-1.5 text-slate-900 shadow-sm md:flex mx-auto w-full max-w-3xl"
+                        className="hidden h-11 min-w-0 flex-1 items-center rounded-full bg-panel-2 pl-2 pr-1.5 text-white ring-1 ring-white/10 md:flex mx-auto w-full max-w-3xl"
                     >
                         <SelectMenu
                             label="Search category"
@@ -251,7 +251,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             onChange={setCategory}
                             options={CATEGORY_OPTIONS}
                             className="h-full shrink-0"
-                            triggerClassName="flex h-full cursor-pointer items-center gap-1.5 rounded-full pl-3 pr-2 text-[13px] font-semibold text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none"
+                            triggerClassName="flex h-full cursor-pointer items-center gap-1.5 rounded-full pl-3 pr-2 text-[13px] font-semibold text-slate-200 transition-colors hover:text-white focus-visible:outline-none"
                             renderTrigger={(sel, open) => (
                                 <>
                                     {sel.label}
@@ -262,19 +262,19 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 </>
                             )}
                         />
-                        <span className="mx-2 h-5 w-px bg-slate-200" aria-hidden />
+                        <span className="mx-2 h-5 w-px bg-white/15" aria-hidden />
                         <input
                             type="search"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search for rooms, phones, laptops, beds…"
                             aria-label="Search listings"
-                            className="h-full min-w-0 flex-1 bg-transparent px-1 text-sm placeholder:text-slate-400 focus:outline-none"
+                            className="h-full min-w-0 flex-1 bg-transparent px-1 text-sm placeholder:text-slate-500 focus:outline-none"
                         />
                         <button
                             type="submit"
                             aria-label="Search"
-                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-[#15803D] text-white transition-colors hover:bg-emerald-900"
+                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-[#15803D] text-white transition-colors hover:bg-emerald-600"
                         >
                             <Search className="size-4" aria-hidden />
                         </button>
@@ -306,14 +306,14 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                 {/* Search (mobile) */}
                 <form onSubmit={onSearch} role="search" className="px-[30px] pb-3 md:hidden">
-                    <div className="flex h-11 items-center rounded-full bg-white pl-4 pr-1.5 text-slate-900 shadow-sm">
+                    <div className="flex h-11 items-center rounded-full bg-panel-2 pl-4 pr-1.5 text-white ring-1 ring-white/10">
                         <input
                             type="search"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search for products…"
                             aria-label="Search listings"
-                            className="h-full min-w-0 flex-1 bg-transparent text-sm placeholder:text-slate-400 focus:outline-none"
+                            className="h-full min-w-0 flex-1 bg-transparent text-sm placeholder:text-slate-500 focus:outline-none"
                         />
                         <button
                             type="submit"
@@ -347,14 +347,14 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             </button>
 
                             {catOpen && (
-                                <div className="absolute left-0 top-full z-50 mt-3 w-[40rem] overflow-hidden rounded-2xl bg-white text-slate-900 shadow-[0_24px_60px_-12px_rgba(6,40,24,0.45)] ring-1 ring-slate-900/5 animate-pop motion-reduce:animate-none">
+                                <div className="absolute left-0 top-full z-50 mt-3 w-[40rem] overflow-hidden rounded-2xl bg-panel-2 text-white shadow-[0_24px_60px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/10 animate-pop motion-reduce:animate-none">
                                     <div className="flex items-center justify-between px-6 pb-2 pt-5">
                                         <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
                                             Browse by category
                                         </h2>
                                         <Link
                                             to="/trade"
-                                            className="inline-flex items-center gap-1 text-sm font-semibold text-[#15803D] hover:underline"
+                                            className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-400 hover:underline"
                                         >
                                             View all listings
                                             <ArrowRight className="size-4" aria-hidden />
@@ -366,12 +366,12 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                             <li key={key}>
                                                 <Link
                                                     to={to}
-                                                    className="group block rounded-xl px-4 py-3.5 transition-colors hover:bg-slate-50"
+                                                    className="group block rounded-xl px-4 py-3.5 transition-colors hover:bg-white/5"
                                                 >
-                                                    <span className="flex items-center gap-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-[#15803D]">
+                                                    <span className="flex items-center gap-2 text-sm font-semibold text-white transition-colors group-hover:text-emerald-400">
                                                         {label}
                                                     </span>
-                                                    <span className="mt-0.5 block text-[13px] leading-snug text-slate-500">
+                                                    <span className="mt-0.5 block text-[13px] leading-snug text-slate-400">
                                                         {hint}
                                                     </span>
                                                 </Link>
@@ -379,8 +379,8 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                         ))}
                                     </ul>
 
-                                    <div className="flex items-center justify-between gap-6 border-t border-slate-100 bg-slate-50 px-6 py-4">
-                                        <p className="text-sm text-slate-600">
+                                    <div className="flex items-center justify-between gap-6 border-t border-white/10 bg-black/20 px-6 py-4">
+                                        <p className="text-sm text-slate-300">
                                             Selling something? Reach buyers across Rwanda.
                                         </p>
                                         <Link
@@ -431,7 +431,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                 {mobileOpen && (
                     <div
                         id="mobile-menu"
-                        className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-white/10 bg-emerald-900 lg:hidden"
+                        className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-white/10 bg-panel lg:hidden"
                     >
                         <div className="mx-auto w-full space-y-6 px-[30px] py-6">
                             <nav aria-label="Primary mobile">

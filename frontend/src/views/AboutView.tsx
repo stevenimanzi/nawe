@@ -54,7 +54,7 @@ const eyebrow = 'text-xs font-semibold uppercase tracking-[0.16em]';
 export const AboutView: React.FC = () => (
     <div className="about-page">
         {/* Hero */}
-        <section className="bg-[#0B3D24] text-white">
+        <section className="bg-[linear-gradient(135deg,#0B3D24_0%,#07110C_70%)] text-white">
             <div className="w-full px-[30px] py-16 lg:py-24">
                 <h1 className="max-w-4xl text-4xl font-bold leading-[1.15] sm:text-5xl lg:text-[3.5rem]">
                     Second-hand goods and shelter, made{' '}
@@ -83,18 +83,18 @@ export const AboutView: React.FC = () => (
         </section>
 
         {/* What NAWE does */}
-        <section className="bg-white">
+        <section className="bg-canvas">
             <div className="w-full px-[30px] py-16 lg:py-20">
-                <p className={`${eyebrow} text-[#15803D]`}>What we do</p>
-                <h2 className="mt-3 max-w-2xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+                <p className={`${eyebrow} text-emerald-400`}>What we do</p>
+                <h2 className="mt-3 max-w-2xl text-3xl font-bold leading-tight text-white sm:text-4xl">
                     One place to find what you need, and a home to put it in.
                 </h2>
 
                 <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
                     {OFFERINGS.map((o) => (
                         <div key={o.title} className="border-t-2 border-[#15803D] pt-5">
-                            <h3 className="text-lg font-semibold text-slate-900">{o.title}</h3>
-                            <p className="mt-2 text-sm leading-relaxed text-slate-600">{o.text}</p>
+                            <h3 className="text-lg font-semibold text-white">{o.title}</h3>
+                            <p className="mt-2 text-sm leading-relaxed text-slate-300">{o.text}</p>
                         </div>
                     ))}
                 </div>
@@ -102,14 +102,14 @@ export const AboutView: React.FC = () => (
         </section>
 
         {/* Vision & mission */}
-        <section className="bg-slate-50">
+        <section className="bg-panel">
             <div className="grid w-full gap-6 px-[30px] py-16 lg:grid-cols-2 lg:gap-8 lg:py-20">
-                <article className="rounded-3xl bg-white p-8 ring-1 ring-slate-200 sm:p-10">
-                    <p className={`${eyebrow} text-[#15803D]`}>Our vision</p>
-                    <h2 className="mt-4 text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
+                <article className="rounded-3xl bg-panel-2 p-8 ring-1 ring-white/10 sm:p-10">
+                    <p className={`${eyebrow} text-emerald-400`}>Our vision</p>
+                    <h2 className="mt-4 text-2xl font-bold leading-snug text-white sm:text-3xl">
                         A Rwanda where everyone can find what they need, nearby, affordably and safely.
                     </h2>
-                    <p className="mt-4 text-[15px] leading-relaxed text-slate-600">
+                    <p className="mt-4 text-[15px] leading-relaxed text-slate-300">
                         A place to live and the things to live well, within reach of every household, with nothing
                         useful going to waste.
                     </p>
@@ -129,14 +129,14 @@ export const AboutView: React.FC = () => (
         </section>
 
         {/* Values */}
-        <section className="bg-white">
+        <section className="bg-canvas">
             <div className="w-full px-[30px] py-16 lg:py-20">
-                <p className={`${eyebrow} text-[#15803D]`}>What we stand for</p>
+                <p className={`${eyebrow} text-emerald-400`}>What we stand for</p>
                 <dl className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
                     {VALUES.map((v) => (
                         <div key={v.title}>
-                            <dt className="text-lg font-semibold text-slate-900">{v.title}</dt>
-                            <dd className="mt-2 text-sm leading-relaxed text-slate-600">{v.text}</dd>
+                            <dt className="text-lg font-semibold text-white">{v.title}</dt>
+                            <dd className="mt-2 text-sm leading-relaxed text-slate-300">{v.text}</dd>
                         </div>
                     ))}
                 </dl>
@@ -144,11 +144,11 @@ export const AboutView: React.FC = () => (
         </section>
 
         {/* Founders */}
-        <section className="border-t border-slate-200 bg-slate-50">
+        <section className="border-t border-white/10 bg-panel">
             <div className="w-full px-[30px] py-16 lg:py-20">
-                <p className={`${eyebrow} text-[#15803D]`}>The team</p>
-                <h2 className="mt-3 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">Meet the founders</h2>
-                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-600">
+                <p className={`${eyebrow} text-emerald-400`}>The team</p>
+                <h2 className="mt-3 text-3xl font-bold leading-tight text-white sm:text-4xl">Meet the founders</h2>
+                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-300">
                     NAWE was started by two people who want buying, renting and finding a home to feel simple and safe.
                 </p>
 
@@ -156,9 +156,9 @@ export const AboutView: React.FC = () => (
                     {FOUNDERS.map((f) => (
                         <li
                             key={f.name}
-                            className="flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white p-8 sm:flex-row sm:items-start"
+                            className="flex flex-col gap-6 rounded-3xl border border-white/10 bg-panel-2 p-8 sm:flex-row sm:items-start"
                         >
-                            <div className="grid size-28 shrink-0 place-items-center overflow-hidden rounded-full border border-slate-200 text-slate-300">
+                            <div className="grid size-28 shrink-0 place-items-center overflow-hidden rounded-full border border-white/15 text-slate-500">
                                 {f.photo ? (
                                     <img src={f.photo} alt={f.name} className="size-full object-cover" />
                                 ) : (
@@ -167,10 +167,10 @@ export const AboutView: React.FC = () => (
                             </div>
 
                             <div className="min-w-0">
-                                <p className={`${eyebrow} text-[#15803D]`}>Co-founder</p>
-                                <h3 className="mt-2 text-xl font-semibold text-slate-900">{f.name}</h3>
-                                <p className="mt-0.5 text-sm font-medium text-slate-500">{f.role}</p>
-                                <p className="mt-4 text-sm leading-relaxed text-slate-600">{f.bio}</p>
+                                <p className={`${eyebrow} text-emerald-400`}>Co-founder</p>
+                                <h3 className="mt-2 text-xl font-semibold text-white">{f.name}</h3>
+                                <p className="mt-0.5 text-sm font-medium text-slate-400">{f.role}</p>
+                                <p className="mt-4 text-sm leading-relaxed text-slate-300">{f.bio}</p>
                             </div>
                         </li>
                     ))}
@@ -191,7 +191,7 @@ export const AboutView: React.FC = () => (
                     </Link>
                     <Link
                         to="/contact"
-                        className="inline-flex h-12 items-center rounded-full border border-white/40 px-7 text-sm font-semibold transition-colors hover:bg-white hover:text-[#15803D]"
+                        className="inline-flex h-12 items-center rounded-full border border-white/40 px-7 text-sm font-semibold transition-colors hover:bg-white hover:text-[#0B3D24]"
                     >
                         Contact us
                     </Link>

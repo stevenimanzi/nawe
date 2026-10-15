@@ -82,9 +82,9 @@ export const Footer: React.FC = () => {
     };
 
     return (
-        <footer className="mt-auto w-full bg-white">
+        <footer className="mt-auto w-full bg-canvas">
             {/* ───────── Main footer ───────── */}
-            <div className="bg-[#0B3D24] text-white">
+            <div className="border-t border-white/10 bg-panel text-white">
                 {/* Columns */}
                 <div className="grid w-full gap-12 px-[30px] py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)_1.3fr] lg:gap-10">
                     {/* Brand */}
@@ -137,7 +137,7 @@ export const Footer: React.FC = () => {
                                         setSubscribed(false);
                                     }}
                                     placeholder="Enter your email"
-                                    className="h-full min-w-0 flex-1 bg-transparent text-sm placeholder:text-slate-400 focus:outline-none"
+                                    className="h-full min-w-0 flex-1 bg-transparent text-sm placeholder:text-slate-500 focus:outline-none"
                                 />
                                 <button
                                     type="submit"

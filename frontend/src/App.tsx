@@ -13,9 +13,9 @@ export default function App() {
     }, [pathname]);
 
     return (
-        <div className="w-full min-h-screen bg-[#FFFFFF] text-slate-900 flex flex-col font-sans m-0 p-0">
+        <div className="w-full min-h-screen bg-canvas text-slate-200 flex flex-col font-sans m-0 p-0">
             <Header />
-            <main className="w-full flex-1 bg-[#FFFFFF] m-0 p-0 min-h-[40vh]">
+            <main className="w-full flex-1 bg-canvas m-0 p-0 min-h-[40vh]">
                 <Routes>
                     <Route path="/about" element={<AboutView />} />
                     <Route path="*" element={null} />

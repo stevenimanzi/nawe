@@ -2,6 +2,11 @@
 @import "tailwindcss";
 
 @theme {
+    /* Dark palette: canvas < panel < panel-2 */
+    --color-canvas: #07110c;
+    --color-panel: #0d1b14;
+    --color-panel-2: #132a1e;
+
     /* Sans-serif everywhere: even font-serif / font-mono resolve to the sans stack. */
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --font-serif: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -26,8 +31,9 @@ html, body {
     padding: 0;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
-    background-color: #FFFFFF;
-    color: #0F172A;
+    background-color: #07110C;
+    color: #E2EAE5;
+    color-scheme: dark;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -50,5 +56,5 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    background-color: #FFFFFF;
+    background-color: #07110C;
 }
