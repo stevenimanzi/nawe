@@ -19,6 +19,12 @@ class MarketplaceItem extends Model
         'price',
         'category',
         'condition',
+        'listing_type',
+        'rent_period',
+        'location',
+        'latitude',
+        'longitude',
+        'is_urgent',
         'status',
     ];
 
@@ -26,6 +32,9 @@ class MarketplaceItem extends Model
     {
         return [
             'price' => 'integer',
+            'latitude' => 'float',
+            'longitude' => 'float',
+            'is_urgent' => 'boolean',
         ];
     }
 

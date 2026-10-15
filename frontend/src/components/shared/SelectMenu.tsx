@@ -137,7 +137,7 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                                     onClick={() => choose(i)}
                                     className={`flex h-10 cursor-pointer items-center justify-between gap-6 rounded-lg px-3 text-sm transition-colors ${
                                         i === active ? 'bg-white/10' : ''
-                                    } ${isSelected ? 'font-semibold text-emerald-400' : 'text-slate-200'}`}
+                                    } ${isSelected ? 'font-semibold text-white' : 'text-slate-200'}`}
                                 >
                                     {o.label}
                                     {isSelected && <Check className="size-4" aria-hidden />}

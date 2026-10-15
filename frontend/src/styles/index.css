@@ -2,16 +2,43 @@
 @import "tailwindcss";
 
 @theme {
-    /* Dark palette: canvas < panel < panel-2 */
-    --color-canvas: #07110c;
-    --color-panel: #0d1b14;
-    --color-panel-2: #132a1e;
+    /* Dark palette. Charcoal page, deep-navy surfaces, off-white ink. */
+    --color-canvas: #111111; /* secondary / charcoal */
+    --color-panel: #0a1f44; /* primary / deep navy */
+    --color-panel-2: #0f2850; /* raised navy */
+    --color-ink: #f7f7f5; /* off-white text */
+    --color-action: #0b6e4f; /* sell / buy / rent / find */
+    --color-action-hover: #0d855f;
+    --color-gold: #c9a227; /* verified badge only */
+    --color-alert: #b3261e; /* reports / errors */
 
     /* Sans-serif everywhere: even font-serif / font-mono resolve to the sans stack. */
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --font-serif: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --font-mono: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --animate-pop: pop 140ms cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-rise: rise 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    --animate-progress: progress 6500ms linear forwards;
+
+    @keyframes rise {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes progress {
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
+    }
 
     @keyframes pop {
         from {
@@ -31,8 +58,8 @@ html, body {
     padding: 0;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
-    background-color: #07110C;
-    color: #E2EAE5;
+    background-color: #111111;
+    color: #F7F7F5;
     color-scheme: dark;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     line-height: 1.5;
@@ -56,5 +83,5 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    background-color: #07110C;
+    background-color: #111111;
 }

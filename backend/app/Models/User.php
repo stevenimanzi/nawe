@@ -75,9 +75,19 @@ class User extends Authenticatable
         return $this->kycVerification?->status === 'approved';
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function isLandlord(): bool
     {
         return $this->role === 'landlord';
+    }
+
+    public function canListHousing(): bool
+    {
+        return $this->isLandlord() || $this->isAdmin();
     }
 
     public function isAdmin(): bool

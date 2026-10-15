@@ -23,6 +23,8 @@ class HousingListing extends Model
         'latitude',
         'longitude',
         'address',
+        'location',
+        'property_type',
         'status',
     ];
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Trade;
 
+use App\Support\Catalog;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreMarketplaceItemRequest extends FormRequest
 {
@@ -15,13 +17,20 @@ class StoreMarketplaceItemRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'price' => ['required', 'integer', 'min:100'],
-            'category' => [
-                'required',
-                'in:essentials,electronics,tvet_tools,books,clothing,other',
+            'description' => ['required', 'string', 'max:5000'],
+            'price' => ['required', 'integer', 'min:100', 'max:1000000000'],
+            'category' => ['required', Rule::in(Catalog::ITEM_CATEGORIES)],
+            'condition' => ['required', Rule::in(Catalog::CONDITIONS)],
+            'listing_type' => ['sometimes', Rule::in(Catalog::LISTING_TYPES)],
+            'rent_period' => [
+                'nullable',
+                'required_if:listing_type,rent',
+                Rule::in(Catalog::RENT_PERIODS),
             ],
-            'condition' => ['required', 'in:new,like_new,good,fair'],
+            'location' => ['nullable', 'string', 'max:100'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+            'is_urgent' => ['sometimes', 'boolean'],
         ];
     }
 }

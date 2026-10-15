@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
 import { useDismiss } from '@/hooks/useDismiss';
+import { CATEGORIES } from '@/lib/categories';
 import { SOCIALS } from './socials';
 import { SelectMenu, type SelectOption } from './SelectMenu';
 import logoWhite from '@/assets/brand/logo-white.svg';
@@ -32,17 +33,6 @@ const NAV_LINKS: { label: string; to: string; wideOnly?: boolean }[] = [
     { label: 'Shelter & Gueto', to: '/dwell' },
     { label: 'Urgent Deals', to: '/deals' },
     { label: 'Verified Sellers', to: '/kyc', wideOnly: true },
-];
-
-const CATEGORIES = [
-    { key: 'rentals', label: 'Rent from Neighbours', to: '/trade?category=rentals', hint: 'Shoes, suits, washing machines & more' },
-    { key: 'shelter', label: 'Shelter & Gueto', to: '/dwell', hint: 'Rooms, studios, houses' },
-    { key: 'phones', label: 'Used Phones', to: '/trade?category=phones', hint: 'Smartphones & tablets' },
-    { key: 'electronics', label: 'Laptops & Electronics', to: '/trade?category=electronics', hint: 'Computers, TVs, audio' },
-    { key: 'furniture', label: 'Furniture & Beds', to: '/trade?category=furniture', hint: 'Sofas, beds, tables' },
-    { key: 'appliances', label: 'Room Appliances', to: '/trade?category=appliances', hint: 'Fridges, cookers, fans' },
-    { key: 'vehicles', label: 'Motos & Bikes', to: '/trade?category=vehicles', hint: 'Motorcycles & bicycles' },
-    { key: 'tools', label: 'Workshop Tools', to: '/trade?category=tools', hint: 'Hand & power tools' },
 ];
 
 const CATEGORY_OPTIONS: SelectOption[] = [
@@ -72,7 +62,7 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
     >
         {children}
         {count > 0 && (
-            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-black px-1 text-[10px] font-extrabold leading-none text-white ring-2 ring-[#0D1B14]">
+            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-white px-1 text-[10px] font-extrabold leading-none text-black ring-2 ring-[#0A1F44]">
                 {count > 99 ? '99+' : count}
             </span>
         )}
@@ -146,14 +136,14 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
     const navLinkClass = (wideOnly?: boolean) => ({ isActive }: { isActive: boolean }) =>
         `relative h-14 items-center text-sm ${wideOnly ? 'hidden xl:inline-flex' : 'inline-flex'} font-semibold transition-colors ${
             isActive ? 'text-white font-bold' : 'text-white/85 hover:text-white'
-        } after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:rounded-t-full after:bg-black after:transition-transform after:origin-center ${
+        } after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:rounded-t-full after:bg-white after:transition-transform after:origin-center ${
             isActive ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-50'
         }`;
 
     return (
         <div className="sticky top-0 z-50 w-full">
             {/* ───────── Announcement bar ───────── */}
-            <div className="w-full bg-black text-white">
+            <div className="w-full bg-canvas text-white">
                 <div className="mx-auto flex h-10 w-full items-center justify-between gap-4 px-[30px] text-xs">
                     <a
                         href={CONTACT.phoneHref}
@@ -274,7 +264,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         <button
                             type="submit"
                             aria-label="Search"
-                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-[#15803D] text-white transition-colors hover:bg-emerald-600"
+                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-action text-white transition-colors hover:bg-action-hover"
                         >
                             <Search className="size-4" aria-hidden />
                         </button>
@@ -318,7 +308,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         <button
                             type="submit"
                             aria-label="Search"
-                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-[#15803D] text-white"
+                            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-action text-white"
                         >
                             <Search className="size-4" aria-hidden />
                         </button>
@@ -335,7 +325,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                 onClick={() => setCatOpen((o) => !o)}
                                 aria-expanded={catOpen}
                                 aria-haspopup="true"
-                                className="flex h-10 cursor-pointer items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
+                                className="flex h-10 cursor-pointer items-center gap-2 rounded-full bg-action px-5 text-sm font-bold text-white transition-colors hover:bg-action-hover shadow-sm"
                             >
                                 <LayoutGrid className="size-4" aria-hidden />
                                 <span className="xl:hidden">Categories</span>
@@ -354,7 +344,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                         </h2>
                                         <Link
                                             to="/trade"
-                                            className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-400 hover:underline"
+                                            className="inline-flex items-center gap-1 text-sm font-semibold text-white hover:underline"
                                         >
                                             View all listings
                                             <ArrowRight className="size-4" aria-hidden />
@@ -368,7 +358,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                                     to={to}
                                                     className="group block rounded-xl px-4 py-3.5 transition-colors hover:bg-white/5"
                                                 >
-                                                    <span className="flex items-center gap-2 text-sm font-semibold text-white transition-colors group-hover:text-emerald-400">
+                                                    <span className="flex items-center gap-2 text-sm font-semibold text-white transition-colors group-hover:text-white">
                                                         {label}
                                                     </span>
                                                     <span className="mt-0.5 block text-[13px] leading-snug text-slate-400">
@@ -385,7 +375,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                         </p>
                                         <Link
                                             to="/post"
-                                            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-[#15803D] px-4 text-sm font-bold text-white transition-colors hover:bg-[#0F5132]"
+                                            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-action px-4 text-sm font-bold text-white transition-colors hover:bg-action-hover"
                                         >
                                             <Plus className="size-4" aria-hidden />
                                             Post Listing
@@ -418,7 +408,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                             <Link
                                 to="/post"
-                                className="inline-flex h-10 items-center gap-1.5 rounded-full border border-white/30 px-4 text-sm font-bold text-white transition-colors hover:bg-white hover:text-[#15803D]"
+                                className="inline-flex h-10 items-center gap-1.5 rounded-full bg-action px-4 text-sm font-bold text-white transition-colors hover:bg-action-hover"
                             >
                                 <Plus className="size-4" aria-hidden />
                                 Post Listing
@@ -444,7 +434,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                                 className={({ isActive }) =>
                                                     `flex h-12 items-center justify-between rounded-xl px-4 text-[15px] font-semibold transition-colors ${
                                                         isActive
-                                                            ? 'bg-black text-white font-bold'
+                                                            ? 'bg-white/10 text-white font-bold'
                                                             : 'text-white/90 hover:bg-white/5'
                                                     }`
                                                 }
@@ -504,7 +494,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
                                 <Link
                                     to="/post"
-                                    className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-black px-6 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
+                                    className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-action px-6 text-sm font-bold text-white transition-colors hover:bg-action-hover shadow-sm"
                                 >
                                     <Plus className="size-4" aria-hidden />
                                     Post Listing
@@ -512,7 +502,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                             </div>
 
                             <p className="flex items-center gap-2 px-1 text-xs text-white/70">
-                                <BadgeCheck className="size-4 text-emerald-300" aria-hidden />
+                                <BadgeCheck className="size-4 text-gold" aria-hidden />
                                 Every seller on NAWE is ID verified.
                             </p>
                         </div>

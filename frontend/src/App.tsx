@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { AboutView } from '@/views/AboutView';
+import { HomeView } from '@/views/HomeView';
 
 export default function App() {
     const { pathname } = useLocation();
@@ -13,10 +14,11 @@ export default function App() {
     }, [pathname]);
 
     return (
-        <div className="w-full min-h-screen bg-canvas text-slate-200 flex flex-col font-sans m-0 p-0">
+        <div className="w-full min-h-screen bg-canvas text-ink flex flex-col font-sans m-0 p-0">
             <Header />
             <main className="w-full flex-1 bg-canvas m-0 p-0 min-h-[40vh]">
                 <Routes>
+                    <Route path="/" element={<HomeView />} />
                     <Route path="/about" element={<AboutView />} />
                     <Route path="*" element={null} />
                 </Routes>

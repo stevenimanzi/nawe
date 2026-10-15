@@ -13,6 +13,7 @@ class ItemImageResource extends JsonResource
             'id' => $this->id,
             'path' => $this->path,
             'disk' => $this->disk,
+            'url' => $this->url,
             'sort_order' => $this->sort_order,
         ];
     }

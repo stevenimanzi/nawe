@@ -11,6 +11,7 @@ import {
     Phone,
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
+import { PHOTO_CREDITS } from '@/lib/photos';
 import { SOCIALS } from './socials';
 import logoWhite from '@/assets/brand/logo-white.svg';
 
@@ -63,7 +64,7 @@ const LEGAL = [
 ];
 
 const linkClass =
-    'inline-flex items-center rounded text-sm text-emerald-100/80 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+    'inline-flex items-center rounded text-sm text-slate-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
 
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
@@ -92,7 +93,7 @@ export const Footer: React.FC = () => {
                         <Link to="/" className="inline-flex" aria-label="NAWE home">
                             <img src={logoWhite} alt="NAWE" className="h-14 w-auto" />
                         </Link>
-                        <p className="mt-5 max-w-sm text-sm leading-relaxed text-emerald-100/80">
+                        <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-300">
                             Rwanda's trusted marketplace for second-hand goods and shelter. Every seller is ID
                             verified, so you can buy, rent and move with confidence.
                         </p>
@@ -126,7 +127,7 @@ export const Footer: React.FC = () => {
                             <label htmlFor="footer-email" className="sr-only">
                                 Email address
                             </label>
-                            <div className="flex h-12 items-center rounded-full bg-white pl-5 pr-1 text-slate-900 shadow-lg focus-within:ring-4 focus-within:ring-black/20">
+                            <div className="flex h-12 items-center rounded-full bg-panel-2 pl-5 pr-1 text-white ring-1 ring-white/10 focus-within:ring-white/30">
                                 <input
                                     id="footer-email"
                                     type="email"
@@ -141,7 +142,7 @@ export const Footer: React.FC = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="inline-flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
+                                    className="inline-flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-action px-5 text-sm font-bold text-white transition-colors hover:bg-action-hover shadow-sm"
                                 >
                                     Subscribe
                                     <ArrowRight className="size-4" aria-hidden />
@@ -149,7 +150,7 @@ export const Footer: React.FC = () => {
                             </div>
                             <p
                                 role="status"
-                                className={`mt-2 flex items-center gap-2 pl-5 text-sm text-emerald-300 transition-opacity ${
+                                className={`mt-2 flex items-center gap-2 pl-5 text-sm text-white transition-opacity ${
                                     subscribed ? 'opacity-100' : 'opacity-0'
                                 }`}
                             >
@@ -193,7 +194,7 @@ export const Footer: React.FC = () => {
                                 </span>
                                 <a
                                     href={`mailto:${CONTACT.email}`}
-                                    className="break-all text-emerald-100/90 hover:text-white"
+                                    className="break-all text-slate-300 hover:text-white"
                                 >
                                     {CONTACT.email}
                                 </a>
@@ -202,13 +203,13 @@ export const Footer: React.FC = () => {
                                 <span className="grid size-6 shrink-0 place-items-center text-white">
                                     <MapPin className="size-5" aria-hidden />
                                 </span>
-                                <span className="text-emerald-100/90">{CONTACT.address}</span>
+                                <span className="text-slate-300">{CONTACT.address}</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <span className="grid size-6 shrink-0 place-items-center text-white">
                                     <Clock className="size-5" aria-hidden />
                                 </span>
-                                <span className="text-emerald-100/90">{CONTACT.hours}</span>
+                                <span className="text-slate-300">{CONTACT.hours}</span>
                             </li>
                         </ul>
 
@@ -216,7 +217,7 @@ export const Footer: React.FC = () => {
                             href={CONTACT.whatsappHref}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-black px-5 text-sm font-bold text-white transition-colors hover:bg-neutral-800 shadow-sm"
+                            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-action px-5 text-sm font-bold text-white transition-colors hover:bg-action-hover shadow-sm"
                         >
                             <MessageCircle className="size-4" aria-hidden />
                             Chat on WhatsApp
@@ -226,8 +227,21 @@ export const Footer: React.FC = () => {
 
                 {/* Bottom bar */}
                 <div className="border-t border-white/10">
-                    <div className="flex w-full flex-col gap-4 px-[30px] py-6 text-sm text-emerald-100/70 md:flex-row md:items-center md:justify-between">
-                        <p>© {YEAR} NAWE. All rights reserved.</p>
+                    <div className="flex w-full flex-col gap-4 px-[30px] py-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p>© {YEAR} NAWE. All rights reserved.</p>
+                            <p className="mt-1 text-xs text-slate-500">
+                                Photos by {PHOTO_CREDITS.join(', ')} on{' '}
+                                <a
+                                    href="https://unsplash.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline underline-offset-2 hover:text-slate-300"
+                                >
+                                    Unsplash
+                                </a>
+                            </p>
+                        </div>
 
                         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
                             {LEGAL.map((l) => (
@@ -241,7 +255,7 @@ export const Footer: React.FC = () => {
                                 <button
                                     type="button"
                                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                                    className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-white/20 px-4 font-semibold text-white transition-colors hover:bg-white hover:text-[#0B3D24]"
+                                    className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-white/20 px-4 font-semibold text-white transition-colors hover:bg-white hover:text-[#111111]"
                                 >
                                     Back to top
                                     <ArrowUp className="size-4" aria-hidden />
