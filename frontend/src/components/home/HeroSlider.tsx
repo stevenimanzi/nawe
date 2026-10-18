@@ -24,7 +24,7 @@ const SLIDES: Slide[] = [
         label: 'Shelter & Gueto',
         title: 'Find a room close to where you live',
         text: 'Studios, rooms and houses from verified landlords, with their contact right there.',
-        cta: { label: 'Find a Room', to: '/dwell' },
+        cta: { label: 'Find a Room', to: '/dwell?sort=nearest&radius=10' },
         secondary: { label: 'Browse Marketplace', to: '/trade' },
     },
     {
@@ -35,7 +35,7 @@ const SLIDES: Slide[] = [
         title: 'Good things, second time around',
         text: 'Furniture, phones, laptops and appliances at prices that make sense, from people near you.',
         cta: { label: 'Shop Now', to: '/trade' },
-        secondary: { label: 'Near Me', to: '/trade?near=1' },
+        secondary: { label: 'Near Me', to: '/trade?sort=nearest' },
     },
     {
         photoId: PHOTOS.rentals.id,
@@ -78,7 +78,7 @@ export const HeroSlider: React.FC = () => {
 
     return (
         <div
-            className="relative isolate min-h-[600px] overflow-hidden rounded-[2rem] bg-panel lg:min-h-[700px]"
+            className="relative isolate min-h-[600px] overflow-hidden rounded-[2.2rem] border border-white/10 bg-panel shadow-2xl lg:min-h-[700px]"
             role="region"
             aria-roledescription="carousel"
             aria-label="Featured banners"
@@ -104,7 +104,7 @@ export const HeroSlider: React.FC = () => {
             ))}
 
             {/* Readability overlays */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0A1F44]/95 via-[#0A1F44]/60 to-[#0A1F44]/10" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-panel/95 via-panel/60 to-panel/10" />
             <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/60 via-transparent to-black/25" />
 
             {/* Copy (re-mounts on each slide so it animates in) */}

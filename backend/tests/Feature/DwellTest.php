@@ -48,6 +48,10 @@ class DwellTest extends TestCase
     public function test_landlord_can_create_housing_listing(): void
     {
         $landlord = User::factory()->create(['role' => 'landlord']);
+        \App\Models\KycVerification::create([
+            'user_id' => $landlord->id, 'document_type' => 'national_id', 'id_number' => '1',
+            'full_name' => 'Landlord', 'id_front_image_path' => 'x', 'status' => 'approved',
+        ]);
         Sanctum::actingAs($landlord);
 
         $response = $this->postJson('/api/v1/dwell/listings', [

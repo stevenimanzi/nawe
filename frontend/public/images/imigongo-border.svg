@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="6" viewBox="0 0 24 6">
+  <!-- Rwandan Traditional Imigongo Border Ribbon (Ikinyugunyugu) -->
+  <polygon points="0,0 12,6 24,0" fill="#ffffff" opacity="0.95"/>
+  <polygon points="0,6 12,0 24,6" fill="#1a56db" opacity="0.95"/>
+  <polygon points="6,3 12,6 18,3 12,0" fill="#e63946"/>
+</svg>

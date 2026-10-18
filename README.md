@@ -1,78 +1,96 @@
-# NAWE — Dual-Pillar Campus Platform
+# NAWE
 
-**Built by IMANZI Labs (Steven & Yannick)**
-Target: Rwanda Polytechnic Musanze College
+**Second-hand goods, things to rent from neighbours, and rooms and houses (gueto), all from ID-verified people near you.**
 
-NAWE solves two "zero-to-one" problems for university ecosystems:
+Built by Steven IMANZI and BYIRINGIRO Innocent.
 
-- **Dwell** — Off-campus housing discovery (Gueto layer)
-- **Trade** — Peer-to-peer campus marketplace
+## What it does
 
----
+- **Marketplace**: buy and sell second-hand items, or rent them out by the day, week or month. Search, filter, sort, "near me".
+- **Shelter & Gueto**: find rooms, studios and houses with a live map, a "houses around me" distance filter, and room, budget and amenity filters.
+- **Trust**: every seller and landlord verifies a national ID. An admin reviews the documents.
+- **Messaging**, **wishlist**, **reports**, **contact form**, and an **admin** area for ID checks and reported listings.
 
 ## Architecture
 
 ```
 nawe/
-├── backend/    # Laravel 13 — Headless REST API
-└── frontend/   # React 18 SPA / PWA — Vite + TypeScript + Tailwind
+├── backend/    Laravel 13: JSON REST API (Sanctum token auth)
+└── frontend/   React 19 + Vite + TypeScript + Tailwind 4, TanStack Query, React Router, Leaflet maps
 ```
 
-### Tech Stack
+Browsing listings is public. Messaging, saving, posting and everything under `/account` need an account.
 
-| Layer      | Technology                                      |
-|------------|-------------------------------------------------|
-| Backend    | Laravel 13, Sanctum, Redis, Laravel Horizon     |
-| Database   | MySQL 9.7, highly normalised schema             |
-| Frontend   | React 18, Vite, TypeScript, Tailwind CSS        |
-| State      | TanStack Query (server-state), React Router v7  |
-| Media      | AWS S3 / Cloudflare R2 + CDN                    |
-| CI/CD      | GitHub Actions → Laravel Forge / Envoyer        |
+## Run it locally
 
----
+You need PHP 8.3+, Composer, Node 20+ and a database (MySQL, or SQLite for a quick start).
 
-## Local Setup
-
-### Backend
+### 1. API
 
 ```bash
 cd backend
-cp .env.example .env
+cp .env.example .env        # then set DB_* (SQLite: DB_CONNECTION=sqlite and an empty database/database.sqlite)
 composer install
 php artisan key:generate
-php artisan migrate
-php artisan serve
+php artisan migrate --seed  # --seed adds DEMO data. Never seed a production database.
+php artisan storage:link    # lets uploaded photos be served
+php artisan serve           # http://127.0.0.1:8000
 ```
 
-### Frontend
+Photos are stored on Laravel's `public` disk. Set `APP_URL` to the address the API is served from so photo links are correct.
+
+### 2. Web app
 
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run dev                 # http://localhost:3000
 ```
 
----
+The dev server proxies `/api` and `/storage` to `http://localhost:8000`. If the API runs elsewhere:
 
-## Design System
+```bash
+API_TARGET=http://localhost:8001 npm run dev
+```
 
-| Token                     | Value          |
-|---------------------------|----------------|
-| Canvas / Background       | `#050B14`      |
-| Dwell accent (Housing)    | Laterite Red   |
-| Trade action (Marketplace)| `#39FF14`      |
-| Typography                | `#FFFFFF`      |
+### Demo accounts (after `--seed`)
 
-- Default: **Dark Mode**
-- Housing layer: full-bleed maps, vertical scroll, deep cards
-- Marketplace layer: translucent masonry grid, horizontally scrolling, visually elevated
+All use the password `Password@123`.
 
----
+| Email | Role | Notes |
+|---|---|---|
+| `admin@nawe.rw` | Admin | Reviews ID checks and reports at `/admin` |
+| `landlord@nawe.rw` | Landlord | ID verified, can list rooms |
+| `seller@nawe.rw` | Member | ID verified |
+| `buyer@nawe.rw` | Member | Has a conversation and saved listings |
+| `pending@nawe.rw` | Member | ID check waiting for the admin |
 
-## Engineering Rules
+## Tests
 
-- **No N+1 queries** — all Eloquent relations must use `with()` eager loading.
-- **Async uploads** — images are queued via Laravel Horizon; API responds instantly.
-- **Cache first** — TanStack Query caches server state; switching layers never re-fetches cold.
-- **Verified users only** — no housing or marketplace interaction before identity is confirmed.
-- **API-first** — Laravel never serves Blade views; all output is JSON (JSON:API spec).
+```bash
+cd backend && php artisan test      # 28 tests: public browsing, filters, distance, uploads, messaging, KYC
+cd frontend && npm run build        # type-checks and builds
+cd frontend && npm run lint
+```
+
+## Design system
+
+Dark mode only.
+
+| Role | Colour |
+|---|---|
+| Page (charcoal) | `#111111` |
+| Surfaces (deep navy) | `#0A1F44`, raised `#0F2850` |
+| Text (off-white) | `#F7F7F5` |
+| Actions: sell, buy, rent, find | Emerald `#0B6E4F` |
+| Verified badge only | Gold `#C9A227` |
+| Reports and errors | Muted red `#B3261E` |
+
+Fonts: Outfit (headings) and Plus Jakarta Sans (text). Maps use OpenStreetMap tiles; photos on the home page come from Unsplash.
+
+## Before launch
+
+- The terms, privacy and cookie pages are drafts written for how the app works today. Have them reviewed by a lawyer.
+- OpenStreetMap's public tile server is for light use. For real traffic, use a tile provider with an API key.
+- Replace the placeholder email address `support@nawe.rw` and the social links in `frontend/src/lib/contact.ts` and `frontend/src/components/shared/socials.tsx`.
+- The contact form saves messages to the `contact_messages` table. Add an email notification or an admin inbox if you want to be alerted when one arrives.

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BadgeCheck, ChevronDown, Phone, Search } from 'lucide-react';
+import { BadgeCheck, ChevronDown, LocateFixed, Phone, Search } from 'lucide-react';
 import { PHOTOS, srcSet, unsplash } from '@/lib/photos';
 import { SelectMenu, type SelectOption } from '@/components/shared/SelectMenu';
+import { useToast } from '@/context/ToastContext';
+import { locateMe } from '@/lib/locations';
 
 const LOCATION_OPTIONS: SelectOption[] = [
     { value: 'any', label: 'Anywhere in Rwanda' },
@@ -36,6 +38,8 @@ const fieldClass =
 
 export const GuetoFinder: React.FC = () => {
     const navigate = useNavigate();
+    const toast = useToast();
+    const [locating, setLocating] = useState(false);
     const [location, setLocation] = useState('any');
     const [rooms, setRooms] = useState('any');
     const [maxRent, setMaxRent] = useState('');
@@ -53,6 +57,18 @@ export const GuetoFinder: React.FC = () => {
         if (amenities.length) params.set('amenities', amenities.join(','));
         const qs = params.toString();
         navigate(qs ? `/dwell?${qs}` : '/dwell');
+    };
+
+    const aroundMe = async () => {
+        setLocating(true);
+        try {
+            await locateMe();
+            navigate('/dwell?sort=nearest&radius=10');
+        } catch (e) {
+            toast.error(e instanceof Error ? e.message : 'Could not get your location.');
+        } finally {
+            setLocating(false);
+        }
     };
 
     const photo = PHOTOS.shelter;
@@ -156,13 +172,24 @@ export const GuetoFinder: React.FC = () => {
                                 })}
                             </div>
 
-                            <button
-                                type="submit"
-                                className="mt-8 inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-action px-10 text-[15px] font-semibold text-white transition-colors hover:bg-action-hover sm:w-auto"
-                            >
-                                <Search className="size-5" aria-hidden />
-                                Search gueto
-                            </button>
+                            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                                <button
+                                    type="submit"
+                                    className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-action px-10 text-[15px] font-semibold text-white transition-colors hover:bg-action-hover sm:w-auto"
+                                >
+                                    <Search className="size-5" aria-hidden />
+                                    Search gueto
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={aroundMe}
+                                    disabled={locating}
+                                    className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/30 px-8 text-[15px] font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#111111] disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+                                >
+                                    <LocateFixed className="size-5" aria-hidden />
+                                    {locating ? 'Locating…' : 'Houses around me'}
+                                </button>
+                            </div>
                         </form>
                     </div>
 

@@ -58,7 +58,8 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('dwell')->group(function () {
-            Route::post('listings', [HousingListingController::class, 'store']);
+            Route::post('listings', [HousingListingController::class, 'store'])
+                ->middleware('verified.seller');
             Route::match(['put', 'patch'], 'listings/{listing}', [HousingListingController::class, 'update']);
             Route::delete('listings/{listing}', [HousingListingController::class, 'destroy']);
             Route::post('listings/{listing}/images', [HousingListingController::class, 'storeImages']);

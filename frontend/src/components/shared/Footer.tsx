@@ -38,9 +38,9 @@ const LINK_GROUPS: { title: string; links: { label: string; to: string }[] }[] =
         title: 'Shelter & Gueto',
         links: [
             { label: 'Find a Room', to: '/dwell' },
-            { label: 'Studios & Apartments', to: '/dwell?type=studio' },
-            { label: 'Houses for Rent', to: '/dwell?type=house' },
-            { label: 'Post a Property', to: '/post' },
+            { label: 'Studios & Apartments', to: '/dwell?property_type=studio' },
+            { label: 'Houses for Rent', to: '/dwell?property_type=house' },
+            { label: 'Post a Property', to: '/post/housing' },
             { label: 'Landlord Guide', to: '/guides/landlords' },
         ],
     },
@@ -225,9 +225,9 @@ export const Footer: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Bottom bar */}
-                <div className="border-t border-white/10">
-                    <div className="flex w-full flex-col gap-4 px-[30px] py-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+                {/* Bottom bar - Rwandan Imigongo Design */}
+                <div className="border-t border-white/10 bg-imigongo-dark">
+                    <div className="flex w-full flex-col gap-4 px-[30px] py-6 text-sm text-slate-300 md:flex-row md:items-center md:justify-between">
                         <div>
                             <p>© {YEAR} NAWE. All rights reserved.</p>
                             <p className="mt-1 text-xs text-slate-500">

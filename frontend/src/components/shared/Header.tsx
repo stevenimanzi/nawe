@@ -11,12 +11,16 @@ import {
     Menu,
     Phone,
     Plus,
+    MessageSquare,
     Search,
-    ShoppingBag,
     User,
     X,
 } from 'lucide-react';
 import { CONTACT } from '@/lib/contact';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
+import { useFavoriteIds, useUnreadCount } from '@/hooks/queries';
+import { locateMe } from '@/lib/locations';
 import { useDismiss } from '@/hooks/useDismiss';
 import { CATEGORIES } from '@/lib/categories';
 import { SOCIALS } from './socials';
@@ -62,7 +66,7 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
     >
         {children}
         {count > 0 && (
-            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-white px-1 text-[10px] font-extrabold leading-none text-black ring-2 ring-[#0A1F44]">
+            <span className="absolute right-0 top-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-white px-1 text-[10px] font-extrabold leading-none text-black ring-2 ring-panel">
                 {count > 99 ? '99+' : count}
             </span>
         )}
@@ -70,17 +74,105 @@ const IconButton: React.FC<IconButtonProps> = ({ label, count = 0, to, children 
 );
 
 /* ------------------------------------------------------------------ */
+/* Account menu                                                        */
+/* ------------------------------------------------------------------ */
+
+const AccountMenu: React.FC = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const toast = useToast();
+    const [open, setOpen] = useState(false);
+    const ref = useDismiss(open, () => setOpen(false));
+
+    if (!user) {
+        return (
+            <Link
+                to="/login"
+                className="ml-1 inline-flex h-10 items-center rounded-full border border-white/30 px-4 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-[#111111]"
+            >
+                Sign in
+            </Link>
+        );
+    }
+
+    const items = [
+        { label: 'My account', to: '/account' },
+        { label: 'Messages', to: '/messages' },
+        { label: 'Wishlist', to: '/wishlist' },
+        ...(user.is_kyc_verified || user.role === 'admin' ? [] : [{ label: 'Verify your ID', to: '/kyc' }]),
+        ...(user.role === 'admin' ? [{ label: 'Admin', to: '/admin' }] : []),
+    ];
+
+    return (
+        <div ref={ref} className="relative">
+            <button
+                type="button"
+                onClick={() => setOpen((o) => !o)}
+                aria-expanded={open}
+                aria-haspopup="menu"
+                aria-label="Account menu"
+                className="relative grid size-10 cursor-pointer place-items-center rounded-lg text-white transition-colors hover:text-white/80"
+            >
+                <User className="size-5" aria-hidden />
+                {user.is_kyc_verified && (
+                    <BadgeCheck className="absolute -bottom-0.5 -right-0.5 size-4 text-gold" aria-label="ID verified" />
+                )}
+            </button>
+
+            {open && (
+                <div
+                    role="menu"
+                    className="absolute right-0 top-full z-50 mt-3 w-64 rounded-2xl bg-panel-2 p-2 text-white shadow-[0_24px_60px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/10 animate-pop motion-reduce:animate-none"
+                >
+                    <div className="border-b border-white/10 px-3 pb-3 pt-2">
+                        <p className="truncate text-sm font-semibold">{user.name}</p>
+                        <p className="truncate text-xs text-slate-400">{user.email}</p>
+                    </div>
+                    <ul className="py-2">
+                        {items.map((i) => (
+                            <li key={i.to} role="none">
+                                <Link
+                                    to={i.to}
+                                    role="menuitem"
+                                    onClick={() => setOpen(false)}
+                                    className="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:bg-white/5 hover:text-white"
+                                >
+                                    {i.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        type="button"
+                        role="menuitem"
+                        onClick={async () => {
+                            setOpen(false);
+                            await logout();
+                            toast.success('You have been signed out');
+                            navigate('/');
+                        }}
+                        className="w-full cursor-pointer rounded-lg border-t border-white/10 px-3 py-2.5 text-left text-sm font-medium text-slate-200 transition-colors hover:bg-white/5 hover:text-white"
+                    >
+                        Sign out
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+/* ------------------------------------------------------------------ */
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-interface HeaderProps {
-    wishlistCount?: number;
-    cartCount?: number;
-}
-
-export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0 }) => {
+export const Header: React.FC = () => {
     const navigate = useNavigate();
+    const toast = useToast();
     const { pathname } = useLocation();
+    const { user, logout } = useAuth();
+    const { data: unread = 0 } = useUnreadCount();
+    const { data: favorites } = useFavoriteIds();
+    const wishlistCount = favorites?.length ?? 0;
 
     const [query, setQuery] = useState('');
     const [category, setCategory] = useState('all');
@@ -99,37 +191,31 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
         setCatOpen(false);
     }
 
-    /** Sends the user to listings near them; falls back to their chosen location if GPS is unavailable or denied. */
-    const goNearMe = () => {
-        const fallback = () => {
-            setLocating(false);
-            navigate('/trade?near=1');
-        };
-        if (!('geolocation' in navigator)) return fallback();
+    /** Finds the visitor, then shows listings closest to them. */
+    const goNearMe = async () => {
         setLocating(true);
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setLocating(false);
-                navigate('/trade?near=1', {
-                    state: {
-                        coords: {
-                            lat: Number(pos.coords.latitude.toFixed(3)),
-                            lng: Number(pos.coords.longitude.toFixed(3)),
-                        },
-                    },
-                });
-            },
-            fallback,
-            { timeout: 8000, maximumAge: 300_000 },
-        );
+        try {
+            await locateMe();
+            navigate('/trade?sort=nearest');
+        } catch (e) {
+            toast.error(e instanceof Error ? e.message : 'Could not get your location.');
+        } finally {
+            setLocating(false);
+        }
     };
 
     const onSearch = (e: React.FormEvent) => {
         e.preventDefault();
         const params = new URLSearchParams();
         if (query.trim()) params.set('q', query.trim());
-        if (category !== 'all') params.set('category', category);
         if (location !== 'All Rwanda') params.set('location', location);
+
+        // Rooms and houses live on their own page.
+        if (category === 'shelter') {
+            navigate(`/dwell?${params.toString()}`);
+            return;
+        }
+        if (category !== 'all') params.set('category', category);
         navigate(`/trade?${params.toString()}`);
     };
 
@@ -142,8 +228,8 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
 
     return (
         <div className="sticky top-0 z-50 w-full">
-            {/* ───────── Announcement bar ───────── */}
-            <div className="w-full bg-canvas text-white">
+            {/* ───────── Announcement / Top nav bar with Rwandan Imigongo pattern ───────── */}
+            <div className="w-full border-b border-white/10 bg-imigongo-dark text-white shadow-sm">
                 <div className="mx-auto flex h-10 w-full items-center justify-between gap-4 px-[30px] text-xs">
                     <a
                         href={CONTACT.phoneHref}
@@ -155,13 +241,17 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                     </a>
 
                     <p className="min-w-0 truncate text-center font-medium">
-                        <span className="hidden md:inline">Sign up and post your first listing </span>
+                        <span className="hidden md:inline">{user ? 'Post your first listing ' : 'Sign up and post your first listing '}</span>
                         <span className="hidden sm:inline md:hidden">Post your first listing </span>
                         <span className="font-extrabold">FREE</span>
                         <span className="sm:hidden"> first listing</span>
                         <span className="hidden sm:inline">. </span>
-                        <Link to="/signup" className="ml-1 font-bold underline underline-offset-2 hover:no-underline">
-                            Sign up<span className="hidden sm:inline"> now</span>
+                        <Link
+                            to={user ? '/post' : '/register'}
+                            className="ml-1 font-bold underline underline-offset-2 hover:no-underline"
+                        >
+                            {user ? 'Post now' : 'Sign up'}
+                            {!user && <span className="hidden sm:inline"> now</span>}
                         </Link>
                     </p>
 
@@ -193,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
             </div>
 
             {/* ───────── Primary navigation ───────── */}
-            <header className="w-full border-b border-white/10 bg-panel text-white shadow-[0_8px_24px_rgba(0,0,0,0.45)]">
+            <header className="w-full border-b border-white/10 bg-panel bg-imigongo-subtle text-white shadow-[0_8px_24px_rgba(0,0,0,0.45)]">
                 {/* Row 1 — brand · location · search · actions */}
                 <div className="mx-auto flex h-16 w-full items-center gap-4 px-[30px] lg:h-[76px] lg:gap-8 xl:grid xl:grid-cols-[1fr_minmax(0,48rem)_1fr]">
                     <div className="flex shrink-0 items-center gap-8">
@@ -275,12 +365,10 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                         <IconButton label="Wishlist" to="/wishlist" count={wishlistCount}>
                             <Heart className="size-5" aria-hidden />
                         </IconButton>
-                        <IconButton label="Cart" to="/cart" count={cartCount}>
-                            <ShoppingBag className="size-5" aria-hidden />
+                        <IconButton label="Messages" to="/messages" count={unread}>
+                            <MessageSquare className="size-5" aria-hidden />
                         </IconButton>
-                        <IconButton label="Account" to="/account">
-                            <User className="size-5" aria-hidden />
-                        </IconButton>
+                        <AccountMenu />
                         <button
                             type="button"
                             onClick={() => setMobileOpen((o) => !o)}
@@ -446,6 +534,54 @@ export const Header: React.FC<HeaderProps> = ({ wishlistCount = 0, cartCount = 0
                                     ))}
                                 </ul>
                             </nav>
+
+                            <div className="space-y-1 border-t border-white/10 pt-4">
+                                {user ? (
+                                    <>
+                                        {[
+                                            { label: 'My account', to: '/account' },
+                                            { label: 'Messages', to: '/messages' },
+                                            { label: 'Wishlist', to: '/wishlist' },
+                                            ...(user.is_kyc_verified || user.role === 'admin' ? [] : [{ label: 'Verify your ID', to: '/kyc' }]),
+                                            ...(user.role === 'admin' ? [{ label: 'Admin', to: '/admin' }] : []),
+                                        ].map((i) => (
+                                            <Link
+                                                key={i.to}
+                                                to={i.to}
+                                                className="flex h-12 items-center rounded-xl px-4 text-[15px] font-semibold text-white/90 hover:bg-white/5"
+                                            >
+                                                {i.label}
+                                            </Link>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                await logout();
+                                                toast.success('You have been signed out');
+                                                navigate('/');
+                                            }}
+                                            className="flex h-12 w-full cursor-pointer items-center rounded-xl px-4 text-left text-[15px] font-semibold text-white/90 hover:bg-white/5"
+                                        >
+                                            Sign out
+                                        </button>
+                                    </>
+                                ) : (
+                                    <div className="flex gap-3">
+                                        <Link
+                                            to="/login"
+                                            className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-white/30 text-sm font-semibold text-white"
+                                        >
+                                            Sign in
+                                        </Link>
+                                        <Link
+                                            to="/register"
+                                            className="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-action text-sm font-semibold text-white"
+                                        >
+                                            Create account
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
 
                             <button
                                 type="button"

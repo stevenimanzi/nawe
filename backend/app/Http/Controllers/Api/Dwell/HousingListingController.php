@@ -124,9 +124,22 @@ class HousingListingController extends Controller
             'location' => ['nullable', 'string', 'max:100'],
             'property_type' => ['sometimes', Rule::in(Catalog::PROPERTY_TYPES)],
             'status' => ['sometimes', 'in:available,rented,paused'],
+            'has_water' => ['sometimes', 'boolean'],
+            'has_wifi' => ['sometimes', 'boolean'],
+            'has_electricity' => ['sometimes', 'boolean'],
+            'has_parking' => ['sometimes', 'boolean'],
+            'is_furnished' => ['sometimes', 'boolean'],
         ]);
 
-        $listing->update($validated);
+        $amenityKeys = ['has_water', 'has_wifi', 'has_electricity', 'has_parking', 'is_furnished'];
+        $amenities = array_intersect_key($validated, array_flip($amenityKeys));
+
+        $listing->update(array_diff_key($validated, array_flip($amenityKeys)));
+
+        if ($amenities !== []) {
+            HousingAmenity::updateOrCreate(['housing_listing_id' => $listing->id], $amenities);
+        }
+
         $listing->load(['landlord.kycVerification', 'amenities', 'images']);
 
         return response()->json([

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, User } from 'lucide-react';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const OFFERINGS = [
     {
@@ -51,10 +52,13 @@ const FOUNDERS: Founder[] = [
 
 const eyebrow = 'text-xs font-semibold uppercase tracking-[0.16em]';
 
-export const AboutView: React.FC = () => (
+export const AboutView: React.FC = () => {
+    useDocumentTitle('About NAWE');
+
+    return (
     <div className="about-page">
         {/* Hero */}
-        <section className="bg-[linear-gradient(135deg,#0A1F44_0%,#111111_75%)] text-white">
+        <section className="bg-[linear-gradient(135deg,#16181d_0%,#0d0f12_75%)] text-white">
             <div className="w-full px-[30px] py-16 lg:py-24">
                 <h1 className="max-w-4xl text-4xl font-bold leading-[1.15] sm:text-5xl lg:text-[3.5rem]">
                     Second-hand goods and shelter, made{' '}
@@ -199,4 +203,5 @@ export const AboutView: React.FC = () => (
             </div>
         </section>
     </div>
-);
+    );
+};

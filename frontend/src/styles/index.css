@@ -3,9 +3,9 @@
 
 @theme {
     /* Dark palette. Charcoal page, deep-navy surfaces, off-white ink. */
-    --color-canvas: #111111; /* secondary / charcoal */
-    --color-panel: #0a1f44; /* primary / deep navy */
-    --color-panel-2: #0f2850; /* raised navy */
+    --color-canvas: #0d0f12; /* secondary / charcoal canvas */
+    --color-panel: #16181d; /* primary / dark charcoal surface */
+    --color-panel-2: #1f2229; /* raised surface */
     --color-ink: #f7f7f5; /* off-white text */
     --color-action: #0b6e4f; /* sell / buy / rent / find */
     --color-action-hover: #0d855f;
@@ -58,7 +58,7 @@ html, body {
     padding: 0;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
-    background-color: #111111;
+    background-color: #0d0f12;
     color: #F7F7F5;
     color-scheme: dark;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -83,5 +83,141 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    background-color: #111111;
+    background-color: #0d0f12;
+}
+
+/* ---------- Maps (Leaflet) ---------- */
+.nawe-map {
+    background: #14181f;
+    z-index: 0;
+    font-family: inherit;
+}
+
+/* Turn the standard OpenStreetMap tiles into a dark map. */
+.nawe-dark-tiles {
+    filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.6);
+}
+
+.nawe-pin-wrap {
+    background: none;
+    border: 0;
+}
+
+.nawe-pin {
+    position: absolute;
+    left: -11px;
+    top: -26px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50% 50% 50% 0;
+    background: #0b6e4f;
+    border: 2px solid #ffffff;
+    transform: rotate(-45deg);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.nawe-pin--active {
+    background: #ffffff;
+    border-color: #0b6e4f;
+    transform: rotate(-45deg) scale(1.25);
+}
+
+.nawe-me {
+    position: absolute;
+    left: -8px;
+    top: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #4da3ff;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 6px rgba(77, 163, 255, 0.28);
+}
+
+.leaflet-popup-content-wrapper {
+    background: #1f2229;
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    width: 220px !important;
+}
+
+.leaflet-popup-tip {
+    background: #1f2229;
+}
+
+.nawe-popup img {
+    display: block;
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+}
+
+.nawe-popup strong,
+.nawe-popup span {
+    display: block;
+    padding: 0 14px;
+}
+
+.nawe-popup strong {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.nawe-popup span {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.nawe-popup button {
+    margin: 12px 14px 14px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: #0b6e4f;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.leaflet-control-attribution {
+    background: rgba(17, 17, 17, 0.75) !important;
+    color: #94a3b8 !important;
+}
+
+.leaflet-control-attribution a {
+    color: #cbd5e1 !important;
+}
+
+.leaflet-bar a {
+    background: #1f2229;
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.leaflet-bar a:hover {
+    background: #2a2e38;
+    color: #ffffff;
+}
+
+/* ---------- Rwandan Traditional Imigongo Art System ---------- */
+.bg-imigongo-dark {
+    background-color: #080e1a;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba%28255,255,255,0.12%29' stroke-width='2' stroke-linecap='square'%3E%3Cpolygon points='32,24 40,32 32,40 24,32'/%3E%3Cpolygon points='32,16 48,32 32,48 16,32'/%3E%3Cpolygon points='32,8 56,32 32,56 8,32'/%3E%3Cpolygon points='32,0 64,32 32,64 0,32'/%3E%3Cpath d='M0,24 L24,0 M0,16 L16,0 M0,8 L8,0'/%3E%3Cpath d='M40,0 L64,24 M48,0 L64,16 M56,0 L64,8'/%3E%3Cpath d='M0,40 L24,64 M0,48 L16,64 M0,56 L8,64'/%3E%3Cpath d='M40,64 L64,40 M48,64 L64,48 M56,64 L64,56'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 64px 64px;
+}
+
+.bg-imigongo-subtle {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba%28255,255,255,0.06%29' stroke-width='2' stroke-linecap='square'%3E%3Cpolygon points='32,24 40,32 32,40 24,32'/%3E%3Cpolygon points='32,16 48,32 32,48 16,32'/%3E%3Cpolygon points='32,8 56,32 32,56 8,32'/%3E%3Cpolygon points='32,0 64,32 32,64 0,32'/%3E%3Cpath d='M0,24 L24,0 M0,16 L16,0 M0,8 L8,0'/%3E%3Cpath d='M40,0 L64,24 M48,0 L64,16 M56,0 L64,8'/%3E%3Cpath d='M0,40 L24,64 M0,48 L16,64 M0,56 L8,64'/%3E%3Cpath d='M40,64 L64,40 M48,64 L64,48 M56,64 L64,56'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 64px 64px;
 }

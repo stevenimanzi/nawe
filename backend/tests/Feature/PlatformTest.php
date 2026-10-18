@@ -164,14 +164,28 @@ class PlatformTest extends TestCase
         ])->assertForbidden()->assertJsonPath('code', 'KYC_VERIFICATION_REQUIRED');
     }
 
-    public function test_only_landlords_can_list_housing(): void
+    public function test_only_verified_landlords_can_list_housing(): void
     {
         $payload = ['title' => 'Room', 'description' => 'x', 'monthly_rent' => 30000, 'deposit' => 0, 'rooms' => 1, 'location' => 'Musanze'];
+        $approve = fn (User $u) => KycVerification::create([
+            'user_id' => $u->id, 'document_type' => 'national_id', 'id_number' => '1',
+            'full_name' => 'A', 'id_front_image_path' => 'x', 'status' => 'approved',
+        ]);
 
-        Sanctum::actingAs(User::factory()->create(['role' => 'member']));
+        // Not verified yet.
+        Sanctum::actingAs(User::factory()->create(['role' => 'landlord']));
+        $this->postJson('/api/v1/dwell/listings', $payload)->assertForbidden()->assertJsonPath('code', 'KYC_VERIFICATION_REQUIRED');
+
+        // Verified, but a member account.
+        $member = User::factory()->create(['role' => 'member']);
+        $approve($member);
+        Sanctum::actingAs($member);
         $this->postJson('/api/v1/dwell/listings', $payload)->assertForbidden()->assertJsonPath('code', 'LANDLORD_ROLE_REQUIRED');
 
-        Sanctum::actingAs(User::factory()->create(['role' => 'landlord']));
+        // Verified landlord.
+        $landlord = User::factory()->create(['role' => 'landlord']);
+        $approve($landlord);
+        Sanctum::actingAs($landlord);
         $this->postJson('/api/v1/dwell/listings', $payload)->assertCreated()->assertJsonPath('data.location', 'Musanze');
     }
 

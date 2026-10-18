@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Authentic Rwandan Imigongo Geometric Pattern (Amashyo & Itekerere) in Dark Blue -->
+  <g fill="none" stroke="rgba(30, 58, 95, 0.18)" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Center Concentric Diamonds (Amashyo) -->
+    <polygon points="32,24 40,32 32,40 24,32" />
+    <polygon points="32,16 48,32 32,48 16,32" />
+    <polygon points="32,8 56,32 32,56 8,32" />
+    <polygon points="32,0 64,32 32,64 0,32" />
+    
+    <!-- Seamless Corner Diagonals creating continuous interlocking chevrons -->
+    <!-- Top-Left -->
+    <path d="M0,24 L24,0 M0,16 L16,0 M0,8 L8,0" />
+    <!-- Top-Right -->
+    <path d="M40,0 L64,24 M48,0 L64,16 M56,0 L64,8" />
+    <!-- Bottom-Left -->
+    <path d="M0,40 L24,64 M0,48 L16,64 M0,56 L8,64" />
+    <!-- Bottom-Right -->
+    <path d="M40,64 L64,40 M48,64 L64,48 M56,64 L64,56" />
+  </g>
+</svg>
