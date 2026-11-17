@@ -75,7 +75,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
 /// Confirmation shown after the reset email has been requested.
 class _ResetSentNotice extends StatelessWidget {
-  const _ResetSentNotice({super.key});
+  const _ResetSentNotice();
 
   @override
   Widget build(BuildContext context) {

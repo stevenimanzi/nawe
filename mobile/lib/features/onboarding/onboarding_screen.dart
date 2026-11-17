@@ -17,7 +17,7 @@ const _slides = [
   _Slide(
     Icons.storefront_outlined,
     'Buy and sell near you',
-    'Second-hand goods and new items from ID-verified people in your neighbourhood.',
+    'Second-hand goods and new items from people in your neighbourhood.',
   ),
   _Slide(
     Icons.home_work_outlined,
