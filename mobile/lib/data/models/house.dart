@@ -18,6 +18,8 @@ class House {
     required this.address,
     required this.amenities,
     required this.images,
+    this.thumb = '',
+    this.photoCount = 0,
     this.available = true,
     this.createdAt,
   });
@@ -38,9 +40,16 @@ class House {
   final List<String> amenities;
   final List<String> images;
   final bool available;
+
+  /// Small cover image (`data:` URI) for uploaded listings.
+  final String thumb;
+
+  /// Number of full-size photos stored in the `photos` sub-collection.
+  final int photoCount;
   final DateTime? createdAt;
 
-  String get cover => images.isEmpty ? '' : images.first;
+  String get cover =>
+      thumb.isNotEmpty ? thumb : (images.isEmpty ? '' : images.first);
 
   factory House.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final d = doc.data() ?? {};
@@ -61,6 +70,8 @@ class House {
       amenities: List<String>.from(d['amenities'] as List? ?? const []),
       images: List<String>.from(d['images'] as List? ?? const []),
       available: d['available'] as bool? ?? true,
+      thumb: d['thumb'] as String? ?? '',
+      photoCount: (d['photoCount'] as num?)?.toInt() ?? 0,
       createdAt: (d['createdAt'] as Timestamp?)?.toDate(),
     );
   }
@@ -81,6 +92,8 @@ class House {
         'amenities': amenities,
         'images': images,
         'available': available,
+        'thumb': thumb,
+        'photoCount': photoCount,
         'createdAt': FieldValue.serverTimestamp(),
       };
 }

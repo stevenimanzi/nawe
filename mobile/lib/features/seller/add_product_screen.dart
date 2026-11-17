@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/catalog.dart';
+import '../../core/utils/photo_encoder.dart';
 import '../../core/utils/validators.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../core/widgets/photo_picker_field.dart';
@@ -56,9 +57,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
     setState(() => _busy = true);
     try {
-      final urls = await ref
-          .read(imageUploaderProvider)
-          .upload('products/${user.uid}', _photos);
+      final photos = await PhotoEncoder.encode(_photos);
       final specs = <String, String>{};
       for (var i = 0; i < _specKeys.length; i++) {
         final k = _specKeys[i].text.trim();
@@ -74,11 +73,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             price: int.parse(_price.text.replaceAll(',', '').trim()),
             category: _category,
             condition: _condition,
-            images: urls,
+            images: const [],
+            thumb: photos.thumb,
+            photoCount: photos.full.length,
             specs: specs,
             stock: int.parse(_stock.text.trim()),
             location: _location.text.trim(),
-          ));
+          ), photos: photos.full);
       if (mounted) {
         showMessage(context, 'Your product is live.');
         context.pop();

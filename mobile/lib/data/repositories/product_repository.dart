@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/product.dart';
 import 'auth_repository.dart';
+import 'photo_repository.dart';
 
 final productRepositoryProvider = Provider<ProductRepository>(
   (ref) => ProductRepository(ref.watch(firestoreProvider)),
@@ -50,31 +48,28 @@ class ProductRepository {
       .snapshots()
       .map((d) => d.exists ? Product.fromDoc(d) : null);
 
-  Future<void> create(Product product) => _col.add(product.toMap());
+  /// Publishes [product]; [photos] are stored beside it as full-size images.
+  Future<void> create(Product product, {List<String> photos = const []}) {
+    final ref = _col.doc();
+    final batch = _db.batch()..set(ref, product.toMap());
+    ListingPhotos.write(batch, ref, photos);
+    return batch.commit();
+  }
+
+  Future<List<String>> photos(String id) => ListingPhotos.load(_col.doc(id));
 
   Future<void> update(String id, Map<String, dynamic> data) =>
       _col.doc(id).update(data);
 
-  Future<void> delete(String id) => _col.doc(id).delete();
-}
-
-/// Uploads listing photos to Firebase Storage and returns their URLs.
-class ImageUploader {
-  ImageUploader(this._storage);
-
-  final FirebaseStorage _storage;
-
-  Future<List<String>> upload(String folder, List<File> files) async {
-    final urls = <String>[];
-    for (final file in files) {
-      final name = '${DateTime.now().microsecondsSinceEpoch}.jpg';
-      final ref = _storage.ref('$folder/$name');
-      await ref.putFile(file);
-      urls.add(await ref.getDownloadURL());
-    }
-    return urls;
+  Future<void> delete(String id) async {
+    final batch = _db.batch();
+    await ListingPhotos.deleteAll(batch, _col.doc(id));
+    batch.delete(_col.doc(id));
+    await batch.commit();
   }
 }
 
-final imageUploaderProvider =
-    Provider<ImageUploader>((_) => ImageUploader(FirebaseStorage.instance));
+/// Full-size photos of one product, loaded on the detail screen.
+final productPhotosProvider = FutureProvider.family<List<String>, String>(
+  (ref, id) => ref.watch(productRepositoryProvider).photos(id),
+);

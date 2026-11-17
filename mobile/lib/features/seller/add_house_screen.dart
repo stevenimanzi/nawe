@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/catalog.dart';
+import '../../core/utils/photo_encoder.dart';
 import '../../core/utils/validators.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../core/widgets/photo_picker_field.dart';
 import '../../data/models/house.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/house_repository.dart';
-import '../../data/repositories/product_repository.dart';
 
 /// Form for a landlord to publish a room, studio, apartment or house.
 class AddHouseScreen extends ConsumerStatefulWidget {
@@ -57,9 +57,7 @@ class _AddHouseScreenState extends ConsumerState<AddHouseScreen> {
 
     setState(() => _busy = true);
     try {
-      final urls = await ref
-          .read(imageUploaderProvider)
-          .upload('houses/${user.uid}', _photos);
+      final photos = await PhotoEncoder.encode(_photos);
       await ref.read(houseRepositoryProvider).create(House(
             id: '',
             ownerId: user.uid,
@@ -75,8 +73,10 @@ class _AddHouseScreenState extends ConsumerState<AddHouseScreen> {
             district: _district,
             address: _address.text.trim(),
             amenities: _amenities.toList(),
-            images: urls,
-          ));
+            images: const [],
+            thumb: photos.thumb,
+            photoCount: photos.full.length,
+          ), photos: photos.full);
       if (mounted) {
         showMessage(context, 'Your house is live.');
         context.pop();

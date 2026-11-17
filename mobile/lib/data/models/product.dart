@@ -14,6 +14,8 @@ class Product {
     required this.images,
     required this.specs,
     required this.stock,
+    this.thumb = '',
+    this.photoCount = 0,
     this.location = '',
     this.rating = 0,
     this.ratingCount = 0,
@@ -32,11 +34,18 @@ class Product {
   final Map<String, String> specs;
   final int stock;
   final String location;
+
+  /// Small cover image (`data:` URI) for uploaded listings.
+  final String thumb;
+
+  /// Number of full-size photos stored in the `photos` sub-collection.
+  final int photoCount;
   final double rating;
   final int ratingCount;
   final DateTime? createdAt;
 
-  String get cover => images.isEmpty ? '' : images.first;
+  String get cover =>
+      thumb.isNotEmpty ? thumb : (images.isEmpty ? '' : images.first);
   bool get inStock => stock > 0;
 
   factory Product.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -56,6 +65,8 @@ class Product {
       ),
       stock: (d['stock'] as num?)?.toInt() ?? 0,
       location: d['location'] as String? ?? '',
+      thumb: d['thumb'] as String? ?? '',
+      photoCount: (d['photoCount'] as num?)?.toInt() ?? 0,
       rating: (d['rating'] as num?)?.toDouble() ?? 0,
       ratingCount: (d['ratingCount'] as num?)?.toInt() ?? 0,
       createdAt: (d['createdAt'] as Timestamp?)?.toDate(),
@@ -74,6 +85,8 @@ class Product {
         'specs': specs,
         'stock': stock,
         'location': location,
+        'thumb': thumb,
+        'photoCount': photoCount,
         'rating': rating,
         'ratingCount': ratingCount,
         'createdAt': FieldValue.serverTimestamp(),

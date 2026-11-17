@@ -38,16 +38,16 @@ class HouseDetailScreen extends ConsumerWidget {
   }
 }
 
-class _HouseBody extends StatefulWidget {
+class _HouseBody extends ConsumerStatefulWidget {
   const _HouseBody({required this.house});
 
   final House house;
 
   @override
-  State<_HouseBody> createState() => _HouseBodyState();
+  ConsumerState<_HouseBody> createState() => _HouseBodyState();
 }
 
-class _HouseBodyState extends State<_HouseBody> {
+class _HouseBodyState extends ConsumerState<_HouseBody> {
   final _pages = PageController();
   int _page = 0;
 
@@ -81,7 +81,9 @@ class _HouseBodyState extends State<_HouseBody> {
     final h = widget.house;
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
-    final images = h.images.isEmpty ? [''] : h.images;
+    final photos = ref.watch(housePhotosProvider(h.id)).value ?? const [];
+    final gallery = [...h.images, ...photos];
+    final images = gallery.isEmpty ? [h.cover] : gallery;
     final hasPhone = h.ownerPhone.isNotEmpty;
 
     return Scaffold(

@@ -55,7 +55,7 @@ class LegalScreen extends StatelessWidget {
           LegalSection('Who can see it',
               'A seller sees your name, address and phone number only for orders you place with them. Landlords and sellers show their name and phone on their listings. We do not sell your data.'),
           LegalSection('Where it is stored',
-              'Your data is stored with Google Firebase (Authentication, Cloud Firestore and Cloud Storage) under security rules that limit access to you and the people involved in your orders.'),
+              'Your data is stored with Google Firebase (Authentication and Cloud Firestore) under security rules that limit access to you and the people involved in your orders.'),
           LegalSection('Your choices',
               'You can edit your details in Profile at any time. To delete your account and data, contact support from the Help & support screen.'),
           LegalSection('Children',

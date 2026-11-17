@@ -86,7 +86,11 @@ class _ProductBodyState extends ConsumerState<_ProductBody> {
     final isMine = uid == p.sellerId;
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
-    final images = p.images.isEmpty ? [''] : p.images;
+    // Uploaded listings keep full-size photos in a sub-collection; show the
+    // small cover while they load.
+    final photos = ref.watch(productPhotosProvider(p.id)).value ?? const [];
+    final gallery = [...p.images, ...photos];
+    final images = gallery.isEmpty ? [p.cover] : gallery;
 
     return Scaffold(
       body: CustomScrollView(

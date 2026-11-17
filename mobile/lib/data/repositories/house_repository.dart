@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/house.dart';
 import 'auth_repository.dart';
+import 'photo_repository.dart';
 
 final houseRepositoryProvider = Provider<HouseRepository>(
   (ref) => HouseRepository(ref.watch(firestoreProvider)),
@@ -43,10 +44,28 @@ class HouseRepository {
   Stream<House?> watchOne(String id) =>
       _col.doc(id).snapshots().map((d) => d.exists ? House.fromDoc(d) : null);
 
-  Future<void> create(House house) => _col.add(house.toMap());
+  /// Publishes [house]; [photos] are stored beside it as full-size images.
+  Future<void> create(House house, {List<String> photos = const []}) {
+    final ref = _col.doc();
+    final batch = _db.batch()..set(ref, house.toMap());
+    ListingPhotos.write(batch, ref, photos);
+    return batch.commit();
+  }
+
+  Future<List<String>> photos(String id) => ListingPhotos.load(_col.doc(id));
 
   Future<void> setAvailable(String id, {required bool available}) =>
       _col.doc(id).update({'available': available});
 
-  Future<void> delete(String id) => _col.doc(id).delete();
+  Future<void> delete(String id) async {
+    final batch = _db.batch();
+    await ListingPhotos.deleteAll(batch, _col.doc(id));
+    batch.delete(_col.doc(id));
+    await batch.commit();
+  }
 }
+
+/// Full-size photos of one house, loaded on the detail screen.
+final housePhotosProvider = FutureProvider.family<List<String>, String>(
+  (ref, id) => ref.watch(houseRepositoryProvider).photos(id),
+);
