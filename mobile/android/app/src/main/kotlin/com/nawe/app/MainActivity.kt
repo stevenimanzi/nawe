@@ -1,4 +1,4 @@
-package rw.nawe.nawe_mobile
+package com.nawe.app
 
 import io.flutter.embedding.android.FlutterActivity
 
