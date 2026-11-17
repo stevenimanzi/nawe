@@ -40,8 +40,8 @@ class OrderLine {
       };
 }
 
-class Order {
-  const Order({
+class ShopOrder {
+  const ShopOrder({
     required this.id,
     required this.buyerId,
     required this.buyerName,
@@ -68,9 +68,9 @@ class Order {
   /// Sellers that have items in this order (used by rules and queries).
   Set<String> get sellerIds => lines.map((l) => l.sellerId).toSet();
 
-  factory Order.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+  factory ShopOrder.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final d = doc.data() ?? {};
-    return Order(
+    return ShopOrder(
       id: doc.id,
       buyerId: d['buyerId'] as String? ?? '',
       buyerName: d['buyerName'] as String? ?? '',
