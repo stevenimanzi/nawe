@@ -36,15 +36,7 @@ class EmptyView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 84,
-              height: 84,
-              decoration: BoxDecoration(
-                color: scheme.surfaceContainerHighest,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, size: 38, color: scheme.onSurfaceVariant),
-            ),
+            Icon(icon, size: 64, color: scheme.onSurfaceVariant),
             const SizedBox(height: 20),
             Text(title,
                 textAlign: TextAlign.center,

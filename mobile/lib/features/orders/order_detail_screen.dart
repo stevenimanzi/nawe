@@ -228,13 +228,12 @@ class _Timeline extends StatelessWidget {
                             : (i <= current ? AppColors.action : scheme.outline),
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 11,
-                      backgroundColor:
-                          i <= current ? AppColors.action : scheme.outline,
-                      child: i <= current
-                          ? const Icon(Icons.check, size: 14, color: Colors.white)
-                          : null,
+                    Icon(
+                      i <= current
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      size: 24,
+                      color: i <= current ? AppColors.action : scheme.outline,
                     ),
                     Expanded(
                       child: Container(

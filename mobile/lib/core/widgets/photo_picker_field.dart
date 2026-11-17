@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'photo_icon.dart';
+
 /// Lets the user pick up to [max] photos from the gallery and remove them.
 class PhotoPickerField extends StatelessWidget {
   const PhotoPickerField({
@@ -73,11 +75,7 @@ class PhotoPickerField extends StatelessWidget {
                     right: 4,
                     child: GestureDetector(
                       onTap: () => onChanged([...files]..removeAt(i)),
-                      child: const CircleAvatar(
-                        radius: 11,
-                        backgroundColor: Colors.black54,
-                        child: Icon(Icons.close, size: 14, color: Colors.white),
-                      ),
+                      child: const PhotoIcon(Icons.close, size: 20),
                     ),
                   ),
                 ],

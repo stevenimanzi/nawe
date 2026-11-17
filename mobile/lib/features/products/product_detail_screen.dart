@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/widgets/photo_icon.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../core/widgets/net_image.dart';
@@ -98,15 +99,9 @@ class _ProductBodyState extends ConsumerState<_ProductBody> {
           SliverAppBar(
             pinned: true,
             expandedHeight: 380,
-            leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: CircleAvatar(
-                backgroundColor: scheme.surface.withValues(alpha: 0.92),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.pop(),
-                ),
-              ),
+            leading: IconButton(
+              icon: const PhotoIcon(Icons.arrow_back),
+              onPressed: () => context.pop(),
             ),
             actions: [
               Padding(
@@ -371,7 +366,7 @@ class _QuantityStepper extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest,
+        border: Border.all(color: scheme.outline),
         borderRadius: BorderRadius.circular(40),
       ),
       child: Row(

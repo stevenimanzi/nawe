@@ -63,10 +63,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: scheme.surfaceContainerHighest,
-                      child: const Icon(Icons.notifications_none),
-                    ),
+                    const Icon(Icons.notifications_none),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

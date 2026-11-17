@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/widgets/photo_icon.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../core/widgets/net_image.dart';
@@ -92,15 +93,9 @@ class _HouseBodyState extends ConsumerState<_HouseBody> {
           SliverAppBar(
             pinned: true,
             expandedHeight: 340,
-            leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: CircleAvatar(
-                backgroundColor: scheme.surface.withValues(alpha: 0.92),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.pop(),
-                ),
-              ),
+            leading: IconButton(
+              icon: const PhotoIcon(Icons.arrow_back),
+              onPressed: () => context.pop(),
             ),
             actions: [
               Padding(

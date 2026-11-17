@@ -84,7 +84,6 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(title: const Text('NAWE assistant')),
       body: Column(
@@ -130,14 +129,10 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  IconButton.filled(
-                    style: IconButton.styleFrom(
-                      backgroundColor: scheme.onSurface,
-                      foregroundColor: scheme.surface,
-                      minimumSize: const Size(52, 52),
-                    ),
+                  IconButton(
+                    iconSize: 28,
                     onPressed: () => _send(_controller.text),
-                    icon: const Icon(Icons.arrow_upward),
+                    icon: const Icon(Icons.send_rounded),
                   ),
                 ],
               ),

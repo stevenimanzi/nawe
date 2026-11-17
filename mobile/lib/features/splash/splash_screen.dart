@@ -71,7 +71,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const AppLogo(size: 112),
+                const AppLogo(size: 112, color: AppColors.ink),
                 const SizedBox(height: 22),
                 Text(
                   'NAWE',

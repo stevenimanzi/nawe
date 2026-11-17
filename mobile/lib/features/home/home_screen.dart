@@ -66,7 +66,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       Badge(
                         isLabelVisible: unread > 0,
                         label: Text('$unread'),
-                        child: IconButton.filledTonal(
+                        child: IconButton(
                           onPressed: () => context.push('/notifications'),
                           icon: const Icon(Icons.notifications_none),
                         ),
@@ -85,14 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search products...',
                           prefixIcon: const Icon(Icons.search),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: CircleAvatar(
-                              backgroundColor: scheme.onSurface,
-                              child: Icon(Icons.tune,
-                                  color: scheme.surface, size: 20),
-                            ),
-                          ),
+                          suffixIcon: const Icon(Icons.tune),
                           fillColor: scheme.surface,
                         ),
                       ),

@@ -139,16 +139,7 @@ class _SlideView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 190,
-            height: 190,
-            decoration: BoxDecoration(
-              color: AppColors.panel,
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.panel2, width: 2),
-            ),
-            child: Icon(slide.icon, size: 84, color: AppColors.ink),
-          ),
+          Icon(slide.icon, size: 120, color: AppColors.ink),
           const SizedBox(height: 48),
           Text(
             slide.title,

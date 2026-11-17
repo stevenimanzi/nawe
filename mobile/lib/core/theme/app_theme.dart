@@ -114,7 +114,7 @@ abstract final class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: panel,
-        indicatorColor: ink.withValues(alpha: 0.1),
+        indicatorColor: Colors.transparent,
         height: 68,
         labelTextStyle: WidgetStatePropertyAll(
           text.labelSmall?.copyWith(fontWeight: FontWeight.w600),

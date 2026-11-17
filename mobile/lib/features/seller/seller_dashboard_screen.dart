@@ -60,7 +60,7 @@ class SellerDashboardScreen extends ConsumerWidget {
                 Badge(
                   isLabelVisible: unread > 0,
                   label: Text('$unread'),
-                  child: IconButton.filledTonal(
+                  child: IconButton(
                     onPressed: () => context.push('/notifications'),
                     icon: const Icon(Icons.notifications_none),
                   ),

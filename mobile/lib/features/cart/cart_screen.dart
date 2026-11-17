@@ -98,11 +98,7 @@ class _CartTile extends ConsumerWidget {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 24),
-        decoration: BoxDecoration(
-          color: scheme.error,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: const Icon(Icons.delete_outline, color: Colors.white),
+        child: Icon(Icons.delete_outline, color: scheme.error),
       ),
       child: Card(
         child: Padding(
@@ -160,7 +156,7 @@ class _Stepper extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest,
+        border: Border.all(color: scheme.outline),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
