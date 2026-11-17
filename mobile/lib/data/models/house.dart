@@ -6,6 +6,7 @@ class House {
     required this.id,
     required this.ownerId,
     required this.ownerName,
+    required this.ownerPhone,
     required this.title,
     required this.description,
     required this.pricePerMonth,
@@ -24,6 +25,7 @@ class House {
   final String id;
   final String ownerId;
   final String ownerName;
+  final String ownerPhone;
   final String title;
   final String description;
   final int pricePerMonth; // RWF
@@ -46,6 +48,7 @@ class House {
       id: doc.id,
       ownerId: d['ownerId'] as String? ?? '',
       ownerName: d['ownerName'] as String? ?? '',
+      ownerPhone: d['ownerPhone'] as String? ?? '',
       title: d['title'] as String? ?? '',
       description: d['description'] as String? ?? '',
       pricePerMonth: (d['pricePerMonth'] as num?)?.toInt() ?? 0,
@@ -65,6 +68,7 @@ class House {
   Map<String, dynamic> toMap() => {
         'ownerId': ownerId,
         'ownerName': ownerName,
+        'ownerPhone': ownerPhone,
         'title': title,
         'description': description,
         'pricePerMonth': pricePerMonth,
