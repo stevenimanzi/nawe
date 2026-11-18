@@ -31,17 +31,6 @@
         }
     }
 
-    --animate-stack-in: stack-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-
-    @keyframes stack-in {
-        from {
-            transform: translateX(100%);
-        }
-        to {
-            transform: none;
-        }
-    }
-
     @keyframes progress {
         from {
             width: 0;
