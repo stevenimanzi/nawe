@@ -1,0 +1,114 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // ---- Users and their private sub-collections ----
+    match /users/{uid} {
+      allow read: if isUser(uid);
+      allow create: if isUser(uid)
+        && request.resource.data.role in ['client', 'seller'];
+      allow update: if isUser(uid)
+        && request.resource.data.role in ['client', 'seller']
+        && !request.resource.data.diff(resource.data)
+            .affectedKeys().hasAny(['email', 'createdAt']);
+
+      match /cart/{productId} {
+        allow read, write: if isUser(uid);
+      }
+      match /favorites/{favoriteId} {
+        allow read, write: if isUser(uid);
+      }
+      match /notifications/{notificationId} {
+        allow read, update, delete: if isUser(uid);
+        // Order flows notify the other party, so any signed-in user may add
+        // an unread notification with exactly these fields.
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['title', 'body', 'read', 'createdAt'])
+          && request.resource.data.read == false;
+      }
+    }
+
+    // ---- Marketplace products ----
+    match /products/{productId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.sellerId == request.auth.uid
+        && request.resource.data.price > 0
+        && request.resource.data.stock >= 0;
+      allow update, delete: if signedIn()
+        && resource.data.sellerId == request.auth.uid;
+
+      // Full-size photos live beside the product; only its seller writes them.
+      match /photos/{photoId} {
+        allow read: if signedIn();
+        // getAfter: the listing is created in the same batch as its photos.
+        allow create: if signedIn()
+          && getAfter(/databases/$(database)/documents/products/$(productId)).data.sellerId
+              == request.auth.uid;
+        allow update, delete: if signedIn()
+          && get(/databases/$(database)/documents/products/$(productId)).data.sellerId
+              == request.auth.uid;
+      }
+      // A buyer's order may only lower the stock of an item.
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+        && request.resource.data.stock >= 0
+        && request.resource.data.stock < resource.data.stock;
+    }
+
+    // ---- Houses and rooms ----
+    match /houses/{houseId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.pricePerMonth > 0;
+      allow update, delete: if signedIn()
+        && resource.data.ownerId == request.auth.uid;
+
+      match /photos/{photoId} {
+        allow read: if signedIn();
+        // getAfter: the listing is created in the same batch as its photos.
+        allow create: if signedIn()
+          && getAfter(/databases/$(database)/documents/houses/$(houseId)).data.ownerId
+              == request.auth.uid;
+        allow update, delete: if signedIn()
+          && get(/databases/$(database)/documents/houses/$(houseId)).data.ownerId
+              == request.auth.uid;
+      }
+    }
+
+    // ---- Orders ----
+    match /orders/{orderId} {
+      allow create: if signedIn()
+        && request.resource.data.buyerId == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow read: if signedIn()
+        && (resource.data.buyerId == request.auth.uid
+            || request.auth.uid in resource.data.sellerIds);
+      // Only the status may change: sellers move it forward or cancel, the
+      // buyer may cancel while it is still pending.
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && (request.auth.uid in resource.data.sellerIds
+            || (resource.data.buyerId == request.auth.uid
+                && resource.data.status == 'pending'
+                && request.resource.data.status == 'cancelled'));
+    }
+
+    // ---- Support tickets (write-only for users) ----
+    match /tickets/{ticketId} {
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

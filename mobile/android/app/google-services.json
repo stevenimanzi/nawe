@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "59341416907",
+    "project_id": "nawe-621a6",
+    "storage_bucket": "nawe-621a6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59341416907:android:6c897b4d10b2d29e812e4e",
+        "android_client_info": {
+          "package_name": "com.nawe.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59341416907-ammq9dhof84ch6nq1kqqp9rqk0l8rk38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nawe.app",
+            "certificate_hash": "e34c3eacc8c8c2b5d1006231c3560377b1c482ac"
+          }
+        },
+        {
+          "client_id": "59341416907-o48k6i81gd53rujlr6jqe7ubuq1np63p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nawe.app",
+            "certificate_hash": "d82c8c3f93d7d7f633726b0288a7453c617bb5b0"
+          }
+        },
+        {
+          "client_id": "59341416907-fssfcq0dac204ectuj5bgadgnupruq82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN8WdbiZGFZ7Erv4wmDR-dpn2YQxsbCog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59341416907-fssfcq0dac204ectuj5bgadgnupruq82.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

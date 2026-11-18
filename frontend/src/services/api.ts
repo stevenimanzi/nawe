@@ -4,7 +4,8 @@ export const TOKEN_KEY = 'nawe_token'
 export const UNAUTHORIZED_EVENT = 'nawe:unauthorized'
 
 const api = axios.create({
-    baseURL: '/api',
+    // Web: same-origin '/api' (Vite proxy / reverse proxy). Mobile app build: VITE_API_URL is the absolute API origin.
+    baseURL: `${import.meta.env.VITE_API_URL ?? ''}/api`,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
